@@ -16,6 +16,8 @@
 package com.xrci.tree;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ClassificationTree 
@@ -152,7 +154,12 @@ public class ClassificationTree
 		return c;
 	}
 	
-	public boolean search(String search)
+	/**
+	 * @param {@code search} string
+	 * @return {@code null} if not found
+	 * 		else returns {@code node}
+	 */
+	public Node search(String search)
 	{
 		Node temp = ROOT;
 		List<Node> list1 = new ArrayList<Node>();
@@ -165,14 +172,49 @@ public class ClassificationTree
 			for(Node ne : list1)
 			{
 				if(ne.node.equals(search))
-					return true;
+					return ne;
 				list2.addAll(ne.children);
 			}
 			list1.clear();
 			list1.addAll(list2);
 			list2.clear();
 		}
-		return false;
+		return null;
+	}
+	
+	
+	public List<Node> totalLeavesUnder(String search)
+	{
+		Node currNode = this.search(search);
+		
+		if(currNode == null)
+			return Collections.emptyList();
+		
+		List<Node> list1 = new ArrayList<Node>();
+		List<Node> list2 = new ArrayList<Node>();
+		
+		//still confused if to return an empty list
+		if(currNode.children.isEmpty())
+			return Arrays.asList(new Node[]{currNode});
+		
+		List<Node> leaves = new ArrayList<Node>();
+		while(!list1.isEmpty())
+		{
+			for(Node ni : list1)
+			{
+				if(ni.children.isEmpty())
+					leaves.add(ni);
+				else
+					list2.addAll(ni.children);
+			}
+			list1.clear();
+			list1.addAll(list2);
+			list2.clear();
+		}
+		
+		list1.add(currNode);
+		
+		return leaves;
 	}
 
 

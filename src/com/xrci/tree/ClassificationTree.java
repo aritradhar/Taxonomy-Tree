@@ -89,6 +89,7 @@ public class ClassificationTree
 				Node newNode = new Node(element);
 				temp.children = new ArrayList<Node>();
 				temp.children.add(newNode);
+				newNode.parent = temp;
 				temp = newNode;
 				size++;
 			}
@@ -112,6 +113,7 @@ public class ClassificationTree
 					Node newNode = new Node(element);
 					//temp.children = new ArrayList<Node>();
 					temp.children.add(newNode);
+					newNode.parent = temp;
 					temp = newNode;
 					size++;
 				}

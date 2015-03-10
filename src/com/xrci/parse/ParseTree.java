@@ -64,14 +64,21 @@ public class ParseTree
 	/*
 	 * Test
 	 */
-	@SuppressWarnings("unused")
 	public static void main(String[] args) throws IOException 
 	{
 		ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\taxonomy.en-US.txt");
 		ClassificationTree ct = pt.makeTree();
 		Node root = ct.getTree();
 		
+		System.out.println(ct.size());
 		System.out.println(ct.leaves());
 		System.out.println(ct.height());
+		
+		
+		ClassificationTree ct1 = new ClassificationTree(root);
+		System.out.println(ct1.size());
+		System.out.println(ct1.leaves());
+		System.out.println(ct1.height());
+		
 	}
 }

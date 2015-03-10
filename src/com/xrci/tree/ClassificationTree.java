@@ -25,6 +25,18 @@ public class ClassificationTree
 	private boolean sizeCalled;
 	private int c;
 	private int height;
+	private int recalulatedSize;
+	private int recalculatedHeight;
+	
+	public ClassificationTree(Node Root)
+	{
+		this.ROOT = Root;
+		this.sizeCalled = false;
+		this.leaveCount();
+		this.size = this.recalulatedSize;
+		this.height = this.recalculatedHeight;
+	}
+	
 	
 	public ClassificationTree()
 	{
@@ -109,6 +121,7 @@ public class ClassificationTree
 	
 	private int leaveCount()
 	{
+		int rc = 0, rh = 0;
 		int c = 0;
 		Node temp = ROOT;
 		List<Node> list1 = new ArrayList<Node>();
@@ -125,10 +138,15 @@ public class ClassificationTree
 				else
 					list2.addAll(ne.children);
 			}
+			rc += list2.size();
 			list1.clear();
 			list1.addAll(list2);
 			list2.clear();
+			rh++;
 		}
+		
+		this.recalulatedSize = rc;
+		this.recalculatedHeight = rh - 1;
 		return c;
 	}
 	

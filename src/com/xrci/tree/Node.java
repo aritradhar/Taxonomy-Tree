@@ -23,20 +23,22 @@ public class Node
 	int id;
 	String node;
 	List<Node> children;
+	Node parent;
 	
 	public Node(String node)
 	{
 		this.id = 0;
 		this.node = node;
 		//empty list denotes to a leaf node
-		this.children = Collections.emptyList(); 
+		this.children = Collections.emptyList();
+		this.parent = null;
 	}
 	
 	@Override
 	public boolean equals(Object obj) 
 	{
 		Node other = (Node) obj;
-		return this.node.equals(other.node);
+		return this.node.equals(other.node) && this.parent.equals(other.parent);
 	}
 	
 	@Override
@@ -45,7 +47,11 @@ public class Node
 		int hash = 0;
 		for(int i = 0; i < this.node.length(); i++)
 		{
-			hash = i * this.node.charAt(i);
+			hash += i * this.node.charAt(i);
+		}
+		for(int i = 0; i < this.parent.node.length(); i++)
+		{
+			hash += i * this.parent.node.charAt(i);
 		}
 		return hash;
 	}

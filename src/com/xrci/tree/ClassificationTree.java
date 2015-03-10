@@ -20,10 +20,11 @@ import java.util.List;
 
 public class ClassificationTree 
 {
-	public Node ROOT;
+	private Node ROOT;
 	private int size;
 	private boolean sizeCalled;
 	private int c;
+	private int height;
 	
 	public ClassificationTree()
 	{
@@ -54,9 +55,19 @@ public class ClassificationTree
 			return this.c;
 		}
 	}
+	public int height()
+	{
+		return this.height;
+	}
 
 	public void insert(String[] elements)
 	{
+		if(elements.length > this.height)
+			this.height = elements.length;
+		
+		//needs to recalculate for the size function
+		this.sizeCalled = false;
+		
 		Node temp = this.ROOT;
 
 		for(String element : elements)
@@ -154,7 +165,6 @@ public class ClassificationTree
 		tree.insert(new String[]{"a", "c"});
 		tree.insert(new String[]{"a", "d"});
 		tree.insert(new String[]{"b", "e", "f"});
-		tree.leaveCount();
 		
 		System.out.println(tree.search("g"));
 	}

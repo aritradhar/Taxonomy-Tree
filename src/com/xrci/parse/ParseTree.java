@@ -69,8 +69,9 @@ public class ParseTree
 	{
 		ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\taxonomy.en-US.txt");
 		ClassificationTree ct = pt.makeTree();
-		Node root = ct.ROOT;
+		Node root = ct.getTree();
 		
 		System.out.println(ct.leaves());
+		System.out.println(ct.height());
 	}
 }

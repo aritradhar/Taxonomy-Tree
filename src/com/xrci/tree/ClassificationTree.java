@@ -20,6 +20,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * n-ary tree to index product taxonomy
+ * as a classification tree
+ * @author Aritra Dhar
+ * <p>
+
+ * </p>
+ */
 public class ClassificationTree 
 {
 	private Node ROOT;
@@ -155,7 +163,7 @@ public class ClassificationTree
 	}
 	
 	/**
-	 * @param {@code search} string
+	 * @param  search {@code search} string
 	 * @return {@code null} if not found
 	 * 		else returns {@code node}
 	 */
@@ -198,6 +206,8 @@ public class ClassificationTree
 			return Arrays.asList(new Node[]{currNode});
 		
 		List<Node> leaves = new ArrayList<Node>();
+		list1.add(currNode);
+		
 		while(!list1.isEmpty())
 		{
 			for(Node ni : list1)
@@ -216,6 +226,58 @@ public class ClassificationTree
 		
 		return leaves;
 	}
+	
+	public List<Node> totalNodesUnder(String search)
+	{
+		Node node = this.search(search);
+		
+		if(node == null)
+			return Collections.emptyList();
+		
+		List<Node> list1 = new ArrayList<Node>();
+		List<Node> list2 = new ArrayList<Node>();
+		
+		List<Node> out = new ArrayList<Node>();
+		list1.add(node);
+		
+		while(list1.isEmpty())
+		{
+			for(Node ne : list1)
+			{
+				if(!ne.children.isEmpty())
+				{
+					out.addAll(ne.children);
+					list2.addAll(ne.children);
+				}
+			}
+			list1.clear();
+			list1.addAll(list2);
+			list2.clear();
+		}
+		
+		
+		return out;
+	}
+	
+	/**
+	 * experimental features
+	 * @param search {@code search} string to 
+	 * delete and all if its children
+	 * 
+	 * @return {@code boolean value}
+	 * {@code true} if found and deleted
+	 * {@code false} if the {@code search}
+	 * string not found
+	 */
+	public boolean delete(String search)
+	{
+		Node currNode = this.search(search);
+		
+		if(currNode == null)
+			return false;
+		
+		return true;
+	}
 
 
 	/*
@@ -228,6 +290,9 @@ public class ClassificationTree
 		tree.insert(new String[]{"a", "d"});
 		tree.insert(new String[]{"b", "e", "f"});
 		
+		//tree.delete("a");
+		System.out.println(tree.totalLeavesUnder("root").size());
 		System.out.println(tree.search("g"));
 	}
 }
+ 

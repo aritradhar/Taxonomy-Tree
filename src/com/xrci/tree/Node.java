@@ -18,6 +18,10 @@ package com.xrci.tree;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Node for the classification tree
+ * @author Aritra Dhar
+ */
 public class Node 
 {
 	int id;

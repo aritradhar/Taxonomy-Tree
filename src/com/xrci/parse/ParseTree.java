@@ -74,6 +74,7 @@ public class ParseTree
 		System.out.println(ct.leaves());
 		System.out.println(ct.height());
 		
+		System.out.println(root.hashCode());
 		
 		ClassificationTree ct1 = new ClassificationTree(root);
 		System.out.println(ct1.size());

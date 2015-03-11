@@ -53,9 +53,15 @@ public class Node
 		{
 			hash += i * this.node.charAt(i);
 		}
-		for(int i = 0; i < this.parent.node.length(); i++)
+		/*
+		 * adjusted for root node
+		 */
+		if (parent != null)
 		{
-			hash += i * this.parent.node.charAt(i);
+			for(int i = 0; i < this.parent.node.length(); i++)
+			{
+				hash += i * this.parent.node.charAt(i);
+			}
 		}
 		return hash;
 	}

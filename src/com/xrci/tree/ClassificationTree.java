@@ -81,7 +81,7 @@ public class ClassificationTree
 	{
 		return this.height;
 	}
-
+	
 	public void insert(String[] elements)
 	{
 		if(elements.length > this.height)
@@ -145,7 +145,7 @@ public class ClassificationTree
 		{
 			for(Node ne : list1)
 			{
-				if(ne.children.isEmpty())
+				if(ne.isLeaf())
 					c++;
 				else
 					list2.addAll(ne.children);
@@ -190,7 +190,11 @@ public class ClassificationTree
 		return null;
 	}
 	
-	
+	/**
+	 * 
+	 * @param search string
+	 * @return returns a list of nodes
+	 */
 	public List<Node> totalLeavesUnder(String search)
 	{
 		Node currNode = this.search(search);
@@ -212,7 +216,7 @@ public class ClassificationTree
 		{
 			for(Node ni : list1)
 			{
-				if(ni.children.isEmpty())
+				if(ni.isLeaf())
 					leaves.add(ni);
 				else
 					list2.addAll(ni.children);
@@ -240,11 +244,11 @@ public class ClassificationTree
 		List<Node> out = new ArrayList<Node>();
 		list1.add(node);
 		
-		while(list1.isEmpty())
+		while(!list1.isEmpty())
 		{
 			for(Node ne : list1)
 			{
-				if(!ne.children.isEmpty())
+				if(!ne.isLeaf())
 				{
 					out.addAll(ne.children);
 					list2.addAll(ne.children);
@@ -257,6 +261,50 @@ public class ClassificationTree
 		
 		
 		return out;
+	}
+	
+	public List<Node> levelOrder(int level)
+	{
+		List<Node> out = new ArrayList<>();
+		
+		Node node = this.ROOT;
+		List<Node> list1 = new ArrayList<Node>();
+		List<Node> list2 = new ArrayList<Node>();
+		list1.add(node);
+		int i = 0;
+		
+		while(!list1.isEmpty())
+		{
+			if(i == level)
+				break;
+			
+			for(Node ne : list1)
+			{
+				if(!ne.isLeaf())
+				{
+					if(i+1 == level)
+						out.addAll(ne.children);
+					list2.addAll(ne.children);
+				}
+			}
+			list1.clear();
+			list1.addAll(list2);
+			list2.clear();
+			i++;
+			
+		}
+		
+		return out;
+	}
+	
+	public void addWeight(String search, float weight)
+	{
+		Node node = this.search(search);
+		if(node == null)
+			throw new RuntimeException(search + " not found in the tree");
+		
+		node.weight = weight;
+		this.normalizeWeight();
 	}
 	
 	/**
@@ -276,9 +324,38 @@ public class ClassificationTree
 		if(currNode == null)
 			return false;
 		
+		List<Node> children = currNode.parent.children;
+		int index = 0;
+		for(Node child : children)
+		{
+			if(child.node.equals(currNode.node))
+				break;
+			
+			index++;
+		}
+		children.remove(index);
+		currNode = null;
+		this.normalizeWeight();
 		return true;
 	}
 
+	public void normalizeWeight()
+	{
+		this.normalizeWeight_recursive(this.ROOT);
+	}
+	
+	private float normalizeWeight_recursive(Node node)
+	{
+		if(node.isLeaf())
+			return node.weight;
+		
+		for(Node child : node.children)
+		{
+			node.weight += normalizeWeight_recursive(child);
+		}
+		
+		return node.weight;
+	}
 
 	/*
 	 * test
@@ -291,6 +368,9 @@ public class ClassificationTree
 		tree.insert(new String[]{"b", "e", "f"});
 		
 		//tree.delete("a");
+		tree.addWeight("e", 0.5f);
+		tree.normalizeWeight();
+		
 		System.out.println(tree.totalLeavesUnder("root").size());
 		System.out.println(tree.search("g"));
 	}

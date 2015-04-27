@@ -28,6 +28,7 @@ public class Node
 	String node;
 	List<Node> children;
 	Node parent;
+	float weight;
 	
 	public Node(String node)
 	{
@@ -36,6 +37,12 @@ public class Node
 		//empty list denotes to a leaf node
 		this.children = Collections.emptyList();
 		this.parent = null;
+		this.weight = 0.0f;
+	}
+	
+	public boolean isLeaf()
+	{
+		return this.children.isEmpty();
 	}
 	
 	@Override
@@ -64,5 +71,11 @@ public class Node
 			}
 		}
 		return hash;
+	}
+	
+	@Override
+	public String toString() 
+	{
+		return this.node;
 	}
 }

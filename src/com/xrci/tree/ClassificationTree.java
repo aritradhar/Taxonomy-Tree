@@ -87,6 +87,16 @@ public class ClassificationTree
 		return this.height;
 	}
 	
+	public float getWeight(String search)
+	{
+		Node node = this.search(search);
+		
+		if(node == null)
+			throw new IllegalArgumentException(search + " not exists in the tree");
+		
+		return node.weight;
+	}
+	
 	public void insert(String[] elements)
 	{
 		if(elements.length > this.height)
@@ -309,7 +319,7 @@ public class ClassificationTree
 			throw new RuntimeException(search + " not found in the tree");
 		
 		if(!node.isLeaf())
-			throw new RuntimeException("Can not modify weight of non leaf node");
+			throw new RuntimeException("Can not modify weight of non leaf node : " + search);
 		
 		node.weight = weight;
 		this.normalizeWeight();
@@ -357,6 +367,7 @@ public class ClassificationTree
 		if(node.isLeaf())
 			return node.weight;
 		
+		node.weight = 0;
 		for(Node child : node.children)
 		{
 			node.weight += normalizeWeight_recursive(child);
@@ -376,9 +387,11 @@ public class ClassificationTree
 		tree.insert(new String[]{"b", "e", "f"});
 		
 		//tree.delete("a");
-		tree.addOrModifyWeight("e", 0.5f);
-		tree.normalizeWeight();
+		tree.addOrModifyWeight("f", 0.5f);
+		tree.addOrModifyWeight("c", 0.5f);
+		//tree.normalizeWeight();
 		
+		System.out.println(tree.getWeight("root"));
 		System.out.println(tree.totalLeavesUnder("root").size());
 		System.out.println(tree.search("g"));
 	}

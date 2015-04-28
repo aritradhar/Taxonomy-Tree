@@ -71,7 +71,7 @@ public class ParseTree
 		Node root = ct.getTree();
 		
 		System.out.println(ct.size());
-		System.out.println(ct.leaves());
+		System.out.println(ct.leafCount());
 		System.out.println(ct.height());
 		System.out.println(ct.levelOrder(1));
 		System.out.println(root.hashCode());

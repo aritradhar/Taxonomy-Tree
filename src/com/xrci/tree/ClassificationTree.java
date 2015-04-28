@@ -64,12 +64,21 @@ public class ClassificationTree
 		return this.ROOT;
 	}
 	
+	/**
+	 * 
+	 * @return no of nodes in the classification tree
+	 */
 	public int size()
 	{
 		return this.size;
 	}
 	
-	public int leaves()
+	/**
+	 * 
+	 * @return total number of leaf nodes in 
+	 * the classification tree
+	 */
+	public int leafCount()
 	{
 		if(!this.sizeCalled)
 		{
@@ -82,6 +91,11 @@ public class ClassificationTree
 			return this.leafCount_internal;
 		}
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int height()
 	{
 		return this.height;
@@ -361,7 +375,14 @@ public class ClassificationTree
 		}
 		children.remove(index);
 		currNode = null;
+		//weight fix
 		this.normalizeWeight();
+		
+		//tree size fix
+		this.sizeCalled = false;
+		this.leaveCount();
+		this.size = this.recalulatedSize;
+		this.height = this.recalculatedHeight;
 		return true;
 	}
 

@@ -367,13 +367,41 @@ public class ClassificationTree
 		if(node.isLeaf())
 			return node.weight;
 		
-		node.weight = 0;
+		node.weight = 0.0f;
 		for(Node child : node.children)
 		{
 			node.weight += normalizeWeight_recursive(child);
 		}
 		
 		return node.weight;
+	}
+	
+	/**
+	 * Experimental feature to change the weight 
+	 * only through the path to the root node without
+	 * changing the entire tree
+	 * 
+	 * @param node
+	 * @param weight
+	 */
+	public void addOrModifyWeight_efficient(String search, float weight)
+	{
+		Node node = this.search(search);
+		if(node == null)
+			throw new RuntimeException(search + " not found in the tree");
+		
+		this.weightDeltaFix(node, weight);
+		
+	}
+	private void weightDeltaFix(Node node, float weight)
+	{
+		float delta = weight - node.weight;
+		node.weight = weight;
+		while(node.parent != null)
+		{
+			node = node.parent;
+			node.weight += delta;
+		}
 	}
 
 	/*
@@ -389,6 +417,7 @@ public class ClassificationTree
 		//tree.delete("a");
 		tree.addOrModifyWeight("f", 0.5f);
 		tree.addOrModifyWeight("c", 0.5f);
+		tree.addOrModifyWeight_efficient("c", 0);
 		//tree.normalizeWeight();
 		
 		System.out.println(tree.getWeight("root"));

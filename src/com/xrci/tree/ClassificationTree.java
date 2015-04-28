@@ -28,9 +28,9 @@ import java.util.List;
 
  * </p>
  */
-public class ClassificationTree 
+public class ClassificationTree<T> 
 {
-	private Node ROOT;
+	private Node<T> ROOT;
 	private int size;
 	private boolean sizeCalled;
 	private int leafCount_internal;
@@ -38,7 +38,7 @@ public class ClassificationTree
 	private int recalulatedSize;
 	private int recalculatedHeight;
 	
-	public ClassificationTree(Node Root)
+	public ClassificationTree(Node<T> Root)
 	{
 		this.ROOT = Root;
 		this.sizeCalled = false;
@@ -53,13 +53,14 @@ public class ClassificationTree
 		return this.ROOT.toString();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ClassificationTree()
 	{
-		this.ROOT = new Node("root");
+		this.ROOT = new Node<T>((T) "root");
 		sizeCalled = false;
 	}
 
-	public Node getTree()
+	public Node<T> getTree()
 	{
 		return this.ROOT;
 	}
@@ -101,9 +102,9 @@ public class ClassificationTree
 		return this.height;
 	}
 	
-	public float getWeight(String search)
+	public float getWeight(T search)
 	{
-		Node node = this.search(search);
+		Node<T> node = this.search(search);
 		
 		if(node == null)
 			throw new IllegalArgumentException(search + " not exists in the tree");
@@ -111,7 +112,7 @@ public class ClassificationTree
 		return node.weight;
 	}
 	
-	public void insert(String[] elements)
+	public void insert(T[] elements)
 	{
 		if(elements.length > this.height)
 			this.height = elements.length;
@@ -119,14 +120,14 @@ public class ClassificationTree
 		//needs to recalculate for the size function
 		this.sizeCalled = false;
 		
-		Node temp = this.ROOT;
+		Node<T> temp = this.ROOT;
 
-		for(String element : elements)
+		for(T element : elements)
 		{
 			if(temp.children.isEmpty())
 			{
-				Node newNode = new Node(element);
-				temp.children = new ArrayList<Node>();
+				Node<T> newNode = new Node<>(element);
+				temp.children = new ArrayList<Node<T>>();
 				temp.children.add(newNode);
 				newNode.parent = temp;
 				temp = newNode;
@@ -136,7 +137,7 @@ public class ClassificationTree
 			else
 			{
 				boolean found = false;
-				for(Node nodeIn : temp.children)
+				for(Node<T> nodeIn : temp.children)
 				{
 					if(nodeIn.node.equals(element))
 					{
@@ -149,7 +150,7 @@ public class ClassificationTree
 
 				if(!found)
 				{
-					Node newNode = new Node(element);
+					Node<T> newNode = new Node<T>(element);
 					//temp.children = new ArrayList<Node>();
 					temp.children.add(newNode);
 					newNode.parent = temp;
@@ -164,15 +165,15 @@ public class ClassificationTree
 	{
 		int rc = 0, rh = 0;
 		int c = 0;
-		Node temp = ROOT;
-		List<Node> list1 = new ArrayList<Node>();
-		List<Node> list2 = new ArrayList<Node>();
+		Node<T> temp = ROOT;
+		List<Node<T>> list1 = new ArrayList<Node<T>>();
+		List<Node<T>> list2 = new ArrayList<Node<T>>();
 		
 		list1.add(temp);
 		
 		while(!list1.isEmpty())
 		{
-			for(Node ne : list1)
+			for(Node<T> ne : list1)
 			{
 				if(ne.isLeaf())
 					c++;
@@ -196,17 +197,17 @@ public class ClassificationTree
 	 * @return {@code null} if not found
 	 * 		else returns {@code node}
 	 */
-	public Node search(String search)
+	public Node<T> search(T search)
 	{
-		Node temp = ROOT;
-		List<Node> list1 = new ArrayList<Node>();
-		List<Node> list2 = new ArrayList<Node>();
+		Node<T> temp = ROOT;
+		List<Node<T>> list1 = new ArrayList<Node<T>>();
+		List<Node<T>> list2 = new ArrayList<Node<T>>();
 		
 		list1.add(temp);
 		
 		while(!list1.isEmpty())
 		{
-			for(Node ne : list1)
+			for(Node<T> ne : list1)
 			{
 				if(ne.node.equals(search))
 					return ne;
@@ -223,35 +224,37 @@ public class ClassificationTree
 	 * 
 	 * @return list of leaves
 	 */
-	public List<Node> getAllLeaves()
+	@SuppressWarnings("unchecked")
+	public List<Node<T>> getAllLeaves()
 	{
-		return this.totalLeavesUnder("root");
+		return this.totalLeavesUnder((T) "root");
 	}
 	/**
 	 * 
 	 * @param search string
 	 * @return returns a list of nodes
 	 */
-	public List<Node> totalLeavesUnder(String search)
+	@SuppressWarnings("unchecked")
+	public List<Node<T>> totalLeavesUnder(T search)
 	{
-		Node currNode = this.search(search);
+		Node<T> currNode = this.search(search);
 		
 		if(currNode == null)
 			return Collections.emptyList();
 		
-		List<Node> list1 = new ArrayList<Node>();
-		List<Node> list2 = new ArrayList<Node>();
+		List<Node<T>> list1 = new ArrayList<Node<T>>();
+		List<Node<T>> list2 = new ArrayList<Node<T>>();
 		
 		//still confused if to return an empty list
 		if(currNode.children.isEmpty())
 			return Arrays.asList(new Node[]{currNode});
 		
-		List<Node> leaves = new ArrayList<Node>();
+		List<Node<T>> leaves = new ArrayList<Node<T>>();
 		list1.add(currNode);
 		
 		while(!list1.isEmpty())
 		{
-			for(Node ni : list1)
+			for(Node<T> ni : list1)
 			{
 				if(ni.isLeaf())
 					leaves.add(ni);
@@ -268,22 +271,22 @@ public class ClassificationTree
 		return leaves;
 	}
 	
-	public List<Node> totalNodesUnder(String search)
+	public List<Node<T>> totalNodesUnder(T search)
 	{
-		Node node = this.search(search);
+		Node<T> node = this.search(search);
 		
 		if(node == null)
 			return Collections.emptyList();
 		
-		List<Node> list1 = new ArrayList<Node>();
-		List<Node> list2 = new ArrayList<Node>();
+		List<Node<T>> list1 = new ArrayList<Node<T>>();
+		List<Node<T>> list2 = new ArrayList<Node<T>>();
 		
-		List<Node> out = new ArrayList<Node>();
+		List<Node<T>> out = new ArrayList<Node<T>>();
 		list1.add(node);
 		
 		while(!list1.isEmpty())
 		{
-			for(Node ne : list1)
+			for(Node<T> ne : list1)
 			{
 				if(!ne.isLeaf())
 				{
@@ -300,13 +303,13 @@ public class ClassificationTree
 		return out;
 	}
 	
-	public List<Node> levelOrder(int level)
+	public List<Node<T>> levelOrder(int level)
 	{
-		List<Node> out = new ArrayList<>();
+		List<Node<T>> out = new ArrayList<>();
 		
-		Node node = this.ROOT;
-		List<Node> list1 = new ArrayList<Node>();
-		List<Node> list2 = new ArrayList<Node>();
+		Node<T> node = this.ROOT;
+		List<Node<T>> list1 = new ArrayList<Node<T>>();
+		List<Node<T>> list2 = new ArrayList<Node<T>>();
 		list1.add(node);
 		int i = 0;
 		
@@ -315,7 +318,7 @@ public class ClassificationTree
 			if(i == level)
 				break;
 			
-			for(Node ne : list1)
+			for(Node<T> ne : list1)
 			{
 				if(!ne.isLeaf())
 				{
@@ -334,9 +337,9 @@ public class ClassificationTree
 		return out;
 	}
 	
-	public void addOrModifyWeight(String search, float weight)
+	public void addOrModifyWeight(T search, float weight)
 	{
-		Node node = this.search(search);
+		Node<T> node = this.search(search);
 		if(node == null)
 			throw new RuntimeException(search + " not found in the tree");
 		
@@ -357,16 +360,16 @@ public class ClassificationTree
 	 * {@code false} if the {@code search}
 	 * string not found
 	 */
-	public boolean delete(String search)
+	public boolean delete(T search)
 	{
-		Node currNode = this.search(search);
+		Node<T> currNode = this.search(search);
 		
 		if(currNode == null)
 			return false;
 		
-		List<Node> children = currNode.parent.children;
+		List<Node<T>> children = currNode.parent.children;
 		int index = 0;
-		for(Node child : children)
+		for(Node<T> child : children)
 		{
 			if(child.node.equals(currNode.node))
 				break;
@@ -391,13 +394,13 @@ public class ClassificationTree
 		this.normalizeWeight_recursive(this.ROOT);
 	}
 	
-	private float normalizeWeight_recursive(Node node)
+	private float normalizeWeight_recursive(Node<T> node)
 	{
 		if(node.isLeaf())
 			return node.weight;
 		
 		node.weight = 0.0f;
-		for(Node child : node.children)
+		for(Node<T> child : node.children)
 		{
 			node.weight += normalizeWeight_recursive(child);
 		}
@@ -413,16 +416,16 @@ public class ClassificationTree
 	 * @param node
 	 * @param weight
 	 */
-	public void addOrModifyWeight_efficient(String search, float weight)
+	public void addOrModifyWeight_efficient(T search, float weight)
 	{
-		Node node = this.search(search);
+		Node<T> node = this.search(search);
 		if(node == null)
 			throw new RuntimeException(search + " not found in the tree");
 		
 		this.weightDeltaFix(node, weight);
 		
 	}
-	private void weightDeltaFix(Node node, float weight)
+	private void weightDeltaFix(Node <T>node, float weight)
 	{
 		float delta = weight - node.weight;
 		node.weight = weight;
@@ -438,7 +441,7 @@ public class ClassificationTree
 	 */
 	public static void main(String[] args) 
 	{
-		ClassificationTree tree = new ClassificationTree();
+		ClassificationTree<String> tree = new ClassificationTree<>();
 		tree.insert(new String[]{"a", "c"});
 		tree.insert(new String[]{"a", "d"});
 		tree.insert(new String[]{"b", "e", "f"});

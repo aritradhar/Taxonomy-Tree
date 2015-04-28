@@ -50,9 +50,9 @@ public class ParseTree
 		return out;
 	}
 	
-	public ClassificationTree makeTree()
+	public ClassificationTree<String> makeTree()
 	{
-		ClassificationTree ct = new ClassificationTree();
+		ClassificationTree<String> ct = new ClassificationTree<>();
 		for(String[] elements : this.treeNodes)
 		{
 			ct.insert(elements);
@@ -67,8 +67,8 @@ public class ParseTree
 	public static void main(String[] args) throws IOException 
 	{
 		ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\taxonomy.en-US.txt");
-		ClassificationTree ct = pt.makeTree();
-		Node root = ct.getTree();
+		ClassificationTree<String> ct = pt.makeTree();
+		Node<String> root = ct.getTree();
 		
 		System.out.println(ct.size());
 		System.out.println(ct.leafCount());

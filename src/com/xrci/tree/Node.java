@@ -22,15 +22,15 @@ import java.util.List;
  * Node for the classification tree
  * @author Aritra Dhar
  */
-public class Node 
+public class Node<T>
 {
 	int id;
-	String node;
-	List<Node> children;
-	Node parent;
+	T node;
+	List<Node<T>> children;
+	Node<T> parent;
 	float weight;
 	
-	public Node(String node)
+	public Node(T node)
 	{
 		this.id = 0;
 		this.node = node;
@@ -46,10 +46,11 @@ public class Node
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) 
 	{
-		Node other = (Node) obj;
+		Node<T> other = (Node<T>) obj;
 		return (this.parent != null) ? 
 				this.node.equals(other.node) && this.parent.equals(other.parent) : 
 					this.node.equals(other.node);
@@ -59,18 +60,18 @@ public class Node
 	public int hashCode() 
 	{
 		int hash = 0;
-		for(int i = 0; i < this.node.length(); i++)
+		for(int i = 0; i < this.node.toString().length(); i++)
 		{
-			hash += i * this.node.charAt(i);
+			hash += i * this.node.toString().charAt(i);
 		}
 		/*
 		 * adjusted for root node
 		 */
 		if (parent != null)
 		{
-			for(int i = 0; i < this.parent.node.length(); i++)
+			for(int i = 0; i < this.parent.node.toString().length(); i++)
 			{
-				hash += i * this.parent.node.charAt(i);
+				hash += i * this.parent.node.toString().charAt(i);
 			}
 		}
 		return hash;
@@ -79,6 +80,6 @@ public class Node
 	@Override
 	public String toString() 
 	{
-		return this.node;
+		return this.node.toString();
 	}
 }

@@ -207,6 +207,14 @@ public class ClassificationTree
 	
 	/**
 	 * 
+	 * @return list of leaves
+	 */
+	public List<Node> getAllLeaves()
+	{
+		return this.totalLeavesUnder("root");
+	}
+	/**
+	 * 
 	 * @param search string
 	 * @return returns a list of nodes
 	 */
@@ -421,7 +429,7 @@ public class ClassificationTree
 		//tree.normalizeWeight();
 		
 		System.out.println(tree.getWeight("root"));
-		System.out.println(tree.totalLeavesUnder("root").size());
+		System.out.println(tree.getAllLeaves().size());
 		System.out.println(tree.search("g"));
 	}
 }

@@ -44,12 +44,15 @@ public class Node
 	{
 		return this.children.isEmpty();
 	}
+
 	
 	@Override
 	public boolean equals(Object obj) 
 	{
 		Node other = (Node) obj;
-		return this.node.equals(other.node) && this.parent.equals(other.parent);
+		return (this.parent != null) ? 
+				this.node.equals(other.node) && this.parent.equals(other.parent) : 
+					this.node.equals(other.node);
 	}
 	
 	@Override

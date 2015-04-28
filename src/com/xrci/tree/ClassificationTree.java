@@ -33,7 +33,7 @@ public class ClassificationTree
 	private Node ROOT;
 	private int size;
 	private boolean sizeCalled;
-	private int c;
+	private int leafCount_internal;
 	private int height;
 	private int recalulatedSize;
 	private int recalculatedHeight;
@@ -47,6 +47,11 @@ public class ClassificationTree
 		this.height = this.recalculatedHeight;
 	}
 	
+	@Override
+	public String toString() 
+	{
+		return this.ROOT.toString();
+	}
 	
 	public ClassificationTree()
 	{
@@ -68,13 +73,13 @@ public class ClassificationTree
 	{
 		if(!this.sizeCalled)
 		{
-			this.c = this.leaveCount();
+			this.leafCount_internal = this.leaveCount();
 			this.sizeCalled = true;
-			return this.c;
+			return this.leafCount_internal;
 		}
 		else
 		{
-			return this.c;
+			return this.leafCount_internal;
 		}
 	}
 	public int height()
@@ -297,11 +302,14 @@ public class ClassificationTree
 		return out;
 	}
 	
-	public void addWeight(String search, float weight)
+	public void addOrModifyWeight(String search, float weight)
 	{
 		Node node = this.search(search);
 		if(node == null)
 			throw new RuntimeException(search + " not found in the tree");
+		
+		if(!node.isLeaf())
+			throw new RuntimeException("Can not modify weight of non leaf node");
 		
 		node.weight = weight;
 		this.normalizeWeight();
@@ -368,7 +376,7 @@ public class ClassificationTree
 		tree.insert(new String[]{"b", "e", "f"});
 		
 		//tree.delete("a");
-		tree.addWeight("e", 0.5f);
+		tree.addOrModifyWeight("e", 0.5f);
 		tree.normalizeWeight();
 		
 		System.out.println(tree.totalLeavesUnder("root").size());

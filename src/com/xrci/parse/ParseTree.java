@@ -75,6 +75,7 @@ public class ParseTree
 		System.out.println(ct.height());
 		System.out.println(ct.levelOrder(1));
 		System.out.println(root.hashCode());
+		ct.addOrModifyWeight("Modeling Clay & Dough", 0.5f);
 		
 		//ClassificationTree ct1 = new ClassificationTree(root);
 		//System.out.println(ct1.size());

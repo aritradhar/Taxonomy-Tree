@@ -30,6 +30,7 @@ import java.util.List;
  */
 public class ClassificationTree<T> 
 {
+	public static final String ROOT_NODE = "root";
 	private Node<T> ROOT;
 	private int size;
 	private boolean sizeCalled;
@@ -110,6 +111,16 @@ public class ClassificationTree<T>
 			throw new IllegalArgumentException(search + " not exists in the tree");
 		
 		return node.weight;
+	}
+	
+	public List<Integer> getDatabaseIndex(T search)
+	{
+		Node<T> node = this.search(search);
+		
+		if(node == null)
+			throw new IllegalArgumentException(search + " not exists in the tree");
+		
+		return node.databaseIndex;
 	}
 	
 	
@@ -228,7 +239,7 @@ public class ClassificationTree<T>
 	@SuppressWarnings("unchecked")
 	public List<Node<T>> getAllLeaves()
 	{
-		return this.totalLeavesUnder((T) "root");
+		return this.totalLeavesUnder((T) ROOT_NODE);
 	}
 	/**
 	 * 
@@ -436,7 +447,7 @@ public class ClassificationTree<T>
 		if(node.isLeaf())
 			return node.databaseIndex;
 		
-		node.databaseIndex = Collections.emptyList();
+		node.databaseIndex = new ArrayList<>();
 		
 		for(Node<T> child : node.children)
 		{
@@ -487,10 +498,15 @@ public class ClassificationTree<T>
 		//tree.delete("a");
 		tree.addOrModifyWeight("f", 0.5f);
 		tree.addOrModifyWeight("c", 0.5f);
-		tree.addOrModifyWeight_efficient("c", 0);
+		tree.insert(new String[]{"a", "c"});
+		//tree.addOrModifyWeight_efficient("c", 0);
 		//tree.normalizeWeight();
+		tree.addOrModifyDatabaseIndex("c", new ArrayList<>(Arrays.asList(new Integer[]{0,1,2,3})));
+		tree.addOrModifyDatabaseIndex("d", new ArrayList<>(Arrays.asList(new Integer[]{4,5,6,7})));
 		
-		System.out.println(tree.getWeight("root"));
+		System.out.println(tree.getDatabaseIndex("a"));
+		
+		System.out.println(tree.getWeight(ClassificationTree.ROOT_NODE));
 		System.out.println(tree.getAllLeaves().size());
 		System.out.println(tree.search("g"));
 	}

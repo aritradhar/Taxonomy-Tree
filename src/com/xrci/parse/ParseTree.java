@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import com.xrci.tree.ClassificationTree;
 import com.xrci.tree.Node;
@@ -39,7 +40,7 @@ public class ParseTree
 		ArrayList<String[]> out = new ArrayList<String[]>();
 		BufferedReader br = new BufferedReader(new FileReader(this.filePath));
 		String st = "";
-		
+		 
 		while((st = br.readLine()) != null)
 		{
 			String[] tokens = st.split(" > ");

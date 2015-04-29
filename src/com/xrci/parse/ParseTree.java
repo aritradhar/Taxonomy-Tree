@@ -43,6 +43,9 @@ public class ParseTree
 		 
 		while((st = br.readLine()) != null)
 		{
+			if(st.isEmpty())
+				continue;
+			
 			String[] tokens = st.split(" > ");
 			out.add(tokens);
 		}
@@ -54,6 +57,7 @@ public class ParseTree
 	public ClassificationTree<String> makeTree()
 	{
 		ClassificationTree<String> ct = new ClassificationTree<>();
+
 		for(String[] elements : this.treeNodes)
 		{
 			ct.insert(elements);
@@ -67,14 +71,17 @@ public class ParseTree
 	 */
 	public static void main(String[] args) throws IOException 
 	{
+		long start = System.currentTimeMillis();
+		
 		ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\taxonomy.en-US.txt");
+		//ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\text.txt");
 		ClassificationTree<String> ct = pt.makeTree();
 		Node<String> root = ct.getTree();
 		
 		System.out.println(ct.size());
 		System.out.println(ct.leafCount());
 		System.out.println(ct.height());
-		System.out.println(ct.levelOrder(1));
+		//System.out.println(ct.levelOrder(1));
 		System.out.println(root.hashCode());
 		ct.addOrModifyWeight("Modeling Clay & Dough", 0.5f);
 		
@@ -83,5 +90,7 @@ public class ParseTree
 		//System.out.println(ct1.leaves());
 		//System.out.println(ct1.height());
 		
+		long end = System.currentTimeMillis();
+		System.out.println("Total time : " + (end - start) + " ms");
 	}
 }

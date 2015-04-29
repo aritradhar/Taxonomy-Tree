@@ -29,6 +29,7 @@ public class Node<T>
 	List<Node<T>> children;
 	Node<T> parent;
 	float weight;
+	List<Integer> databaseIndex;
 	
 	public Node(T node)
 	{
@@ -38,13 +39,18 @@ public class Node<T>
 		this.children = Collections.emptyList();
 		this.parent = null;
 		this.weight = 0.0f;
+		this.databaseIndex = Collections.emptyList();
 	}
 	
 	public boolean isLeaf()
 	{
 		return this.children.isEmpty();
 	}
-
+	
+	public void setDatabaseIndex(List<Integer> databaseIndex) 
+	{
+		this.databaseIndex = databaseIndex;
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override

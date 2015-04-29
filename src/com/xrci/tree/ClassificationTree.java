@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * n-ary tree to index product taxonomy
- * as a classification tree
+ * as a generic classification tree
  * @author Aritra Dhar
  * <p>
 
@@ -111,6 +111,7 @@ public class ClassificationTree<T>
 		
 		return node.weight;
 	}
+	
 	
 	public void insert(T[] elements)
 	{
@@ -350,6 +351,19 @@ public class ClassificationTree<T>
 		this.normalizeWeight();
 	}
 	
+	public void addOrModifyDatabaseIndex(T search, List<Integer> databaseIndex)
+	{
+		Node<T> node = this.search(search);
+		if(node == null)
+			throw new RuntimeException(search + " not found in the tree");
+		
+		if(!node.isLeaf())
+			throw new RuntimeException("Can not modify weight of non leaf node : " + search);
+		
+		node.databaseIndex = databaseIndex;
+		this.normalizeDatabaseIndex();
+	}
+	
 	/**
 	 * experimental features
 	 * @param search {@code search} string to 
@@ -378,9 +392,8 @@ public class ClassificationTree<T>
 		}
 		children.remove(index);
 		currNode = null;
-		//weight fix
-		this.normalizeWeight();
-		
+		//weight + database index fix
+		this.normalizeDatabaseIndex();
 		//tree size fix
 		this.sizeCalled = false;
 		this.leaveCount();
@@ -389,6 +402,16 @@ public class ClassificationTree<T>
 		return true;
 	}
 
+	public void normalize()
+	{
+		this.normalizeDatabaseIndex();
+		this.normalizeWeight();
+	}
+	public void normalizeDatabaseIndex()
+	{
+		this.normalizeDatabaseIndex_recursive(this.ROOT);
+	}
+	
 	public void normalizeWeight()
 	{
 		this.normalizeWeight_recursive(this.ROOT);
@@ -406,6 +429,21 @@ public class ClassificationTree<T>
 		}
 		
 		return node.weight;
+	}
+	
+	private List<Integer> normalizeDatabaseIndex_recursive(Node<T> node)
+	{
+		if(node.isLeaf())
+			return node.databaseIndex;
+		
+		node.databaseIndex = Collections.emptyList();
+		
+		for(Node<T> child : node.children)
+		{
+			node.databaseIndex.addAll(normalizeDatabaseIndex_recursive(child));
+		}
+		
+		return node.databaseIndex;
 	}
 	
 	/**

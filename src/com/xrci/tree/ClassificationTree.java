@@ -18,6 +18,7 @@ package com.xrci.tree;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class ClassificationTree<T>
 	{
 		this.ROOT = Root;
 		this.sizeCalled = false;
-		this.leaveCount();
+		this.recalculateLeafCount();
 		this.size = this.recalulatedSize;
 		this.height = this.recalculatedHeight;
 	}
@@ -84,7 +85,7 @@ public class ClassificationTree<T>
 	{
 		if(!this.sizeCalled)
 		{
-			this.leafCount_internal = this.leaveCount();
+			this.leafCount_internal = this.recalculateLeafCount();
 			this.sizeCalled = true;
 			return this.leafCount_internal;
 		}
@@ -173,7 +174,7 @@ public class ClassificationTree<T>
 		}
 	}
 	
-	private int leaveCount()
+	private int recalculateLeafCount()
 	{
 		int rc = 0, rh = 0;
 		int c = 0;
@@ -407,7 +408,7 @@ public class ClassificationTree<T>
 		this.normalizeDatabaseIndex();
 		//tree size fix
 		this.sizeCalled = false;
-		this.leaveCount();
+		this.recalculateLeafCount();
 		this.size = this.recalulatedSize;
 		this.height = this.recalculatedHeight;
 		return true;

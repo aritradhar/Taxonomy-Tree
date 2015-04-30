@@ -354,7 +354,7 @@ public class ClassificationTree<T>
 	{
 		Node<T> node = this.search(search);
 		if(node == null)
-			throw new RuntimeException(search + " not found in the tree");
+			throw new IllegalArgumentException(search + " not exists in the tree");
 		
 		if(!node.isLeaf())
 			throw new RuntimeException("Can not modify weight of non leaf node : " + search);
@@ -367,7 +367,7 @@ public class ClassificationTree<T>
 	{
 		Node<T> node = this.search(search);
 		if(node == null)
-			throw new RuntimeException(search + " not found in the tree");
+			throw new IllegalArgumentException(search + " not exists in the tree");
 		
 		if(!node.isLeaf())
 			throw new RuntimeException("Can not modify weight of non leaf node : " + search);
@@ -470,7 +470,7 @@ public class ClassificationTree<T>
 	{
 		Node<T> node = this.search(search);
 		if(node == null)
-			throw new RuntimeException(search + " not found in the tree");
+			throw new IllegalArgumentException(search + " not exists in the tree");
 		
 		this.weightDeltaFix(node, weight);
 		

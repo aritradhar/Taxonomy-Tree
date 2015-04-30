@@ -73,8 +73,8 @@ public class ParseTree
 	{
 		long start = System.currentTimeMillis();
 		
-		ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\taxonomy.en-US.txt");
-		//ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\text.txt");
+		//ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\taxonomy.en-US.txt");
+		ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\text.txt");
 		ClassificationTree<String> ct = pt.makeTree();
 		Node<String> root = ct.getTree();
 		

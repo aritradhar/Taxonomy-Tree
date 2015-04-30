@@ -35,7 +35,8 @@ public class Test
 			if(i % 1000 == 0)
 				System.out.println(i);
 			
-			int t = rand.nextInt(50);
+			int t = rand.nextInt(49) + 1;
+
 			String s = "";
 			for(int j = 0; j < t; j++)
 			{

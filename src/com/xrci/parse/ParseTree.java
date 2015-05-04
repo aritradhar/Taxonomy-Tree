@@ -48,7 +48,6 @@ public class ParseTree
 			
 			String[] tokens = st.split(" > ");
 			out.add(tokens);
-			
 		}
 		
 		br.close();

@@ -106,6 +106,9 @@ public class ClassificationTree<T>
 	
 	public float getWeight(T search)
 	{
+		if(search == null)
+			throw new IllegalArgumentException("null argument passed");
+			
 		Node<T> node = this.search(search);
 		
 		if(node == null)
@@ -116,6 +119,9 @@ public class ClassificationTree<T>
 	
 	public List<Integer> getDatabaseIndex(T search)
 	{
+		if(search == null)
+			throw new IllegalArgumentException("null argument passed");
+			
 		Node<T> node = this.search(search);
 		
 		if(node == null)
@@ -127,6 +133,10 @@ public class ClassificationTree<T>
 	
 	public void insert(T[] elements)
 	{
+		if(elements == null)
+			throw new IllegalArgumentException("null argument passed");
+			
+		
 		if(elements.length > this.height)
 			this.height = elements.length;
 		
@@ -137,6 +147,12 @@ public class ClassificationTree<T>
 
 		for(T element : elements)
 		{
+			if(element == null)
+			{
+				System.err.println("null elemnt fount in argument, skipping");
+				continue;
+			}
+			
 			if(temp.children.isEmpty())
 			{
 				Node<T> newNode = new Node<>(element);
@@ -212,6 +228,10 @@ public class ClassificationTree<T>
 	 */
 	public Node<T> search(T search)
 	{
+		if(search == null)
+			throw new IllegalArgumentException("null argument passed");
+			
+		
 		Node<T> temp = ROOT;
 		List<Node<T>> list1 = new ArrayList<Node<T>>();
 		List<Node<T>> list2 = new ArrayList<Node<T>>();
@@ -250,6 +270,9 @@ public class ClassificationTree<T>
 	@SuppressWarnings("unchecked")
 	public List<Node<T>> totalLeavesUnder(T search)
 	{
+		if(search == null)
+			throw new IllegalArgumentException("null argument passed");
+			
 		Node<T> currNode = this.search(search);
 		
 		if(currNode == null)
@@ -286,6 +309,10 @@ public class ClassificationTree<T>
 	
 	public List<Node<T>> totalNodesUnder(T search)
 	{
+		if(search == null)
+			throw new IllegalArgumentException("null argument passed");
+			
+		
 		Node<T> node = this.search(search);
 		
 		if(node == null)
@@ -318,6 +345,9 @@ public class ClassificationTree<T>
 	
 	public List<Node<T>> levelOrder(int level)
 	{
+		if(level < 0 || level > this.height)
+			throw new IllegalArgumentException("level " + level + " is invalid");
+			
 		List<Node<T>> out = new ArrayList<>();
 		
 		Node<T> node = this.ROOT;
@@ -350,8 +380,19 @@ public class ClassificationTree<T>
 		return out;
 	}
 	
+	/**
+	 * 
+	 * @param search target node
+	 * @param weight new weight
+	 */
 	public void addOrModifyWeight(T search, float weight)
 	{
+		if(search == null)
+			throw new IllegalArgumentException("null argument passed");
+		
+		if(weight < 0)
+			throw new IllegalArgumentException("Invalid weight");
+		
 		Node<T> node = this.search(search);
 		if(node == null)
 			throw new IllegalArgumentException(search + " not exists in the tree");
@@ -363,8 +404,16 @@ public class ClassificationTree<T>
 		this.normalizeWeight();
 	}
 	
+	/**
+	 * 
+	 * @param search target node
+	 * @param databaseIndex modified indices
+	 */
 	public void addOrModifyDatabaseIndex(T search, List<Integer> databaseIndex)
 	{
+		if(search == null || databaseIndex == null) 
+			throw new IllegalArgumentException("null argument passed");
+		
 		Node<T> node = this.search(search);
 		if(node == null)
 			throw new IllegalArgumentException(search + " not exists in the tree");
@@ -388,6 +437,9 @@ public class ClassificationTree<T>
 	 */
 	public boolean delete(T search)
 	{
+		if(search == null)
+			throw new IllegalArgumentException("null argument passed");
+		
 		Node<T> currNode = this.search(search);
 		
 		if(currNode == null)
@@ -468,6 +520,12 @@ public class ClassificationTree<T>
 	 */
 	public void addOrModifyWeight_efficient(T search, float weight)
 	{
+		if(search == null)
+			throw new IllegalArgumentException("null argument passed");
+		
+		if(weight < 0)
+			throw new IllegalArgumentException("Invalid weight");
+		
 		Node<T> node = this.search(search);
 		if(node == null)
 			throw new IllegalArgumentException(search + " not exists in the tree");

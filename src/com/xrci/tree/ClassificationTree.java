@@ -104,8 +104,12 @@ public class ClassificationTree<T>
 		return this.height;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public float getWeight(T search)
 	{
+		if(search instanceof Node<?>)
+			return getWeight(((Node<T>) search).node);
+		
 		if(search == null)
 			throw new IllegalArgumentException("null argument passed");
 			
@@ -135,7 +139,26 @@ public class ClassificationTree<T>
 	 */
 	public void bringToSameLevel()
 	{
-		
+		this.bringToSameLevel(ROOT);
+	}
+	
+	private Node<T> bringToSameLevel(Node<T> node)
+	{
+		if(node.children.isEmpty() || node == null)
+		{
+			Node<T> tempNode = new Node<>(node);
+			this.delete(node.node);
+			return node;
+		}
+		else
+		{
+			for(Node<T> child : node.children)
+			{
+				return bringToSameLevel(child);
+			}
+			
+			return null;
+		}
 	}
 	
 	public void insert(T[] elements)
@@ -238,8 +261,12 @@ public class ClassificationTree<T>
 	 * @return {@code null} if not found
 	 * 		else returns {@code node}
 	 */
+	@SuppressWarnings("unchecked")
 	public Node<T> search(T search)
 	{
+		if(search instanceof Node<?>)
+			return search(((Node<T>) search).node);	
+		
 		if(search == null)
 			throw new IllegalArgumentException("null argument passed");
 			
@@ -274,14 +301,18 @@ public class ClassificationTree<T>
 	{
 		return this.totalLeavesUnder((T) ROOT_NODE);
 	}
+	
 	/**
-	 * 
 	 * @param search string
 	 * @return returns a list of nodes
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Node<T>> totalLeavesUnder(T search)
 	{
+		if(search instanceof Node<?>)
+			return totalLeavesUnder(((Node<T>) search).node);
+		
+		
 		if(search == null)
 			throw new IllegalArgumentException("null argument passed");
 			
@@ -318,16 +349,26 @@ public class ClassificationTree<T>
 		
 		return leaves;
 	}
-	
+	/**
+	 * 
+	 * @param search string
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
 	public List<Node<T>> totalNodesUnder(T search)
 	{
+		if(search instanceof Node<?>)
+			return totalNodesUnder(((Node<T>) search).node);
+			
 		if(search == null)
 			throw new IllegalArgumentException("null argument passed");
 			
-		
 		Node<T> node = this.search(search);
 		
 		if(node == null)
+			throw new IllegalArgumentException("node " + search + " not found");
+		
+		if(node.isLeaf())
 			return Collections.emptyList();
 		
 		List<Node<T>> list1 = new ArrayList<Node<T>>();
@@ -421,8 +462,12 @@ public class ClassificationTree<T>
 	 * @param search target node
 	 * @param databaseIndex modified indices
 	 */
+	@SuppressWarnings("unchecked")
 	public void addOrModifyDatabaseIndex(T search, List<Integer> databaseIndex)
 	{
+		if(search instanceof Node<?>)
+			addOrModifyDatabaseIndex(((Node<T>)search).node, databaseIndex);
+			
 		if(search == null || databaseIndex == null) 
 			throw new IllegalArgumentException("null argument passed");
 		

@@ -42,6 +42,20 @@ public class Node<T>
 		this.databaseIndex = Collections.emptyList();
 	}
 	
+	/**
+	 * make a classification tree node from an existing node
+	 * @param node input node
+	 */
+	public Node(Node<T> node)
+	{
+		this.node =node.node;
+		this.id = node.id;
+		this.children = node.children;
+		this.parent = node.parent;
+		this.weight = node.weight;
+		this.databaseIndex = node.databaseIndex;
+	}
+	
 	public boolean isLeaf()
 	{
 		return this.children.isEmpty();

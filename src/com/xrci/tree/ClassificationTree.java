@@ -58,7 +58,7 @@ public class ClassificationTree<T>
 	@SuppressWarnings("unchecked")
 	public ClassificationTree()
 	{
-		this.ROOT = new Node<T>((T) "root");
+		this.ROOT = new Node<T>((T) ROOT_NODE);
 		sizeCalled = false;
 	}
 
@@ -130,13 +130,20 @@ public class ClassificationTree<T>
 		return node.databaseIndex;
 	}
 	
+	/**
+	 * bring all leaf nodes at same level
+	 */
+	public void bringToSameLevel()
+	{
+		
+	}
 	
 	public void insert(T[] elements)
 	{
 		if(elements == null)
 			throw new IllegalArgumentException("null argument passed");
-			
-		
+
+		//update the max height of the tree
 		if(elements.length > this.height)
 			this.height = elements.length;
 		
@@ -151,6 +158,11 @@ public class ClassificationTree<T>
 			{
 				System.err.println("null elemnt fount in argument, skipping");
 				continue;
+			}
+			
+			if(element.toString().equals(ROOT_NODE))
+			{
+				throw new IllegalArgumentException("Node name " + ROOT_NODE + " is forbidden " );
 			}
 			
 			if(temp.children.isEmpty())

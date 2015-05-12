@@ -30,11 +30,25 @@ public class Node<T>
 	Node<T> parent;
 	float weight;
 	List<Integer> databaseIndex;
+	int level;
 	
 	public Node(T node)
 	{
 		this.id = 0;
 		this.node = node;
+		this.level = 0;
+		//empty list denotes to a leaf node
+		this.children = Collections.emptyList();
+		this.parent = null;
+		this.weight = 0.0f;
+		this.databaseIndex = Collections.emptyList();
+	}
+	
+	public Node(T node, int level)
+	{
+		this.id = 0;
+		this.node = node;
+		this.level = level;
 		//empty list denotes to a leaf node
 		this.children = Collections.emptyList();
 		this.parent = null;
@@ -50,6 +64,7 @@ public class Node<T>
 	{
 		this.node =node.node;
 		this.id = node.id;
+		this.level = node.level;
 		this.children = node.children;
 		this.parent = node.parent;
 		this.weight = node.weight;

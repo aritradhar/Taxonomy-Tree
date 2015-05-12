@@ -144,23 +144,21 @@ public class ClassificationTree<T>
 	/**
 	 * bring all leaf nodes at same level
 	 */
-	public void bringLeavesToSameLevel()
-	{
-		this.bringLeavesToSameLevel(ROOT, 0);
-	}
 	
 	@SuppressWarnings("unchecked")
-	private Node<T> bringLeavesToSameLevel(Node<T> node, int hight)
+	public void bringLeavesToSameLevel()
 	{
+		List<Node<T>> leaves = this.getAllLeaves();
+		
 		//Manipulate the node only if the node is a leaf node
-		if(node.isLeaf())
+		for(Node<T> node : leaves)
 		{
-			if(hight < this.height)
+			if(node.level < this.height)
 			{
 				Node<T> tempNode = new Node<>(node);
 				Node<T> parent = node.parent;
 				this.delete(node.node);
-				int toInsertIter = this.height - hight;
+				int toInsertIter = this.height - node.level;
 				
 				for(int i = 0; i < toInsertIter; i++)
 				{
@@ -172,19 +170,31 @@ public class ClassificationTree<T>
 				 * insert the original leaf node at the back
 				 * of the newly inserted dummy node 
 				 */
-				this.insert(tempNode, parent);
+				this.inserUnsafe(tempNode, parent);
 			}
-			return node;
 		}
-		else
-		{
-			for(Node<T> child : node.children)
-			{
-				return bringLeavesToSameLevel(child, hight + 1);
-			}
-			
-			return null;
-		}
+	}
+	
+	/**
+	 * not to be used in general scenario
+	 * @param node
+	 * @param parent
+	 */
+	private void inserUnsafe(Node<T> node, Node<T> parent)
+	{
+		if(parent.children.isEmpty())
+			parent.children = new ArrayList<>();
+		
+		parent.children.add(node);
+		parent.weight += node.weight;
+		
+		if(parent.databaseIndex.isEmpty())
+			parent.databaseIndex = new ArrayList<>();
+		
+		parent.databaseIndex.addAll(node.databaseIndex);
+		
+		node.parent = parent;
+		node.level = node.parent.level + 1;
 	}
 	/**
 	 * General insert method
@@ -204,6 +214,7 @@ public class ClassificationTree<T>
 		
 		Node<T> temp = this.ROOT;
 
+		int i = 0;
 		for(T element : elements)
 		{
 			if(element == null)
@@ -219,7 +230,7 @@ public class ClassificationTree<T>
 			
 			if(temp.children.isEmpty())
 			{
-				Node<T> newNode = new Node<>(element);
+				Node<T> newNode = new Node<>(element, ++i);
 				temp.children = new ArrayList<Node<T>>();
 				temp.children.add(newNode);
 				newNode.parent = temp;
@@ -234,6 +245,7 @@ public class ClassificationTree<T>
 				{
 					if(nodeIn.node.equals(element))
 					{
+						i++;
 						temp = nodeIn;
 						found = true;
 						//System.out.println("hit");
@@ -247,6 +259,7 @@ public class ClassificationTree<T>
 					//temp.children = new ArrayList<Node>();
 					temp.children.add(newNode);
 					newNode.parent = temp;
+					newNode.level = newNode.parent.level + 1;
 					temp = newNode;
 					size++;
 				}
@@ -271,6 +284,7 @@ public class ClassificationTree<T>
 		
 		parentSearch.children.add(node);
 		node.parent = parentSearch;
+		node.level = parentSearch.level + 1;
 		
 		Node<T> tempNode = parentSearch;
 		
@@ -294,8 +308,13 @@ public class ClassificationTree<T>
 		if(parentSearch == null)
 			throw new IllegalArgumentException("Parent " + parent.node + " not found");
 		
+		//for empty list
+		if(parentSearch.children.isEmpty())
+			parentSearch.children = new ArrayList<>();
+		
 		parentSearch.children.add(node);
 		node.parent = parentSearch;
+		node.level = parentSearch.level + 1;
 		
 		Node<T> tempNode = parentSearch;
 		
@@ -328,6 +347,7 @@ public class ClassificationTree<T>
 		
 		parentSearch.children.add(node);
 		node.parent = parentSearch;
+		node.level = parentSearch.level + 1;
 		
 		Node<T> tempNode = parentSearch;
 		
@@ -761,6 +781,7 @@ public class ClassificationTree<T>
 		tree.addOrModifyWeight("c", 0.5f);
 		tree.insert(new String[]{"a", "c"});
 		tree.insert("x", "a");
+		tree.bringLeavesToSameLevel();
 		//tree.addOrModifyWeight_efficient("c", 0);
 		//tree.normalizeWeight();
 		tree.addOrModifyDatabaseIndex("c", new ArrayList<>(Arrays.asList(new Integer[]{0,1,2,3})));

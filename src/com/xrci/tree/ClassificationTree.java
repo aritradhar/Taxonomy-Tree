@@ -31,6 +31,12 @@ import java.util.List;
  */
 public class ClassificationTree<T> 
 {
+	public static Node<?> DUMMY_NODE;
+	static
+	{
+		DUMMY_NODE = new Node<String> ("Dummy");
+	}
+	
 	public static final String ROOT_NODE = "root";
 	private Node<T> ROOT;
 	private int size;
@@ -39,6 +45,7 @@ public class ClassificationTree<T>
 	private int height;
 	private int recalulatedSize;
 	private int recalculatedHeight;
+	
 	
 	public ClassificationTree(Node<T> Root)
 	{
@@ -137,24 +144,43 @@ public class ClassificationTree<T>
 	/**
 	 * bring all leaf nodes at same level
 	 */
-	public void bringToSameLevel()
+	public void bringLeavesToSameLevel()
 	{
-		this.bringToSameLevel(ROOT);
+		this.bringLeavesToSameLevel(ROOT, 0);
 	}
 	
-	private Node<T> bringToSameLevel(Node<T> node)
+	@SuppressWarnings("unchecked")
+	private Node<T> bringLeavesToSameLevel(Node<T> node, int hight)
 	{
-		if(node.children.isEmpty() || node == null)
+		//Manipulate the node only if the node is a leaf node
+		if(node.isLeaf())
 		{
-			Node<T> tempNode = new Node<>(node);
-			this.delete(node.node);
+			if(hight < this.height)
+			{
+				Node<T> tempNode = new Node<>(node);
+				Node<T> parent = node.parent;
+				this.delete(node.node);
+				int toInsertIter = this.height - hight;
+				
+				for(int i = 0; i < toInsertIter; i++)
+				{
+					Node<T> Dummy = new Node<T>((T) "Dummy");
+					this.insert(Dummy, parent);
+					parent = Dummy;
+				}
+				/*
+				 * insert the original leaf node at the back
+				 * of the newly inserted dummy node 
+				 */
+				this.insert(tempNode, parent);
+			}
 			return node;
 		}
 		else
 		{
 			for(Node<T> child : node.children)
 			{
-				return bringToSameLevel(child);
+				return bringLeavesToSameLevel(child, hight + 1);
 			}
 			
 			return null;

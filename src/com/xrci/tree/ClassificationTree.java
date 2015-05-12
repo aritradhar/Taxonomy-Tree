@@ -438,8 +438,13 @@ public class ClassificationTree<T>
 	 * @param search target node
 	 * @param weight new weight
 	 */
+	@SuppressWarnings("unchecked")
 	public void addOrModifyWeight(T search, float weight)
 	{
+		if(search instanceof Node<?>)
+			addOrModifyWeight(((Node<T>) search).node, weight);
+		
+		
 		if(search == null)
 			throw new IllegalArgumentException("null argument passed");
 		
@@ -465,6 +470,9 @@ public class ClassificationTree<T>
 	@SuppressWarnings("unchecked")
 	public void addOrModifyDatabaseIndex(T search, List<Integer> databaseIndex)
 	{
+		if(search instanceof Node<?>)
+			addOrModifyDatabaseIndex(((Node<T>) search).node, databaseIndex);
+		
 		if(search instanceof Node<?>)
 			addOrModifyDatabaseIndex(((Node<T>)search).node, databaseIndex);
 			
@@ -492,8 +500,12 @@ public class ClassificationTree<T>
 	 * {@code false} if the {@code search}
 	 * string not found
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean delete(T search)
 	{
+		if(search instanceof Node<?>)
+			return delete(((Node<T>) search).node);
+		
 		if(search == null)
 			throw new IllegalArgumentException("null argument passed");
 		
@@ -575,8 +587,12 @@ public class ClassificationTree<T>
 	 * @param node
 	 * @param weight
 	 */
+	@SuppressWarnings("unchecked")
 	public void addOrModifyWeight_efficient(T search, float weight)
 	{
+		if(search instanceof Node<?>)
+			addOrModifyWeight_efficient(((Node<T>) search).node, weight);
+		
 		if(search == null)
 			throw new IllegalArgumentException("null argument passed");
 		

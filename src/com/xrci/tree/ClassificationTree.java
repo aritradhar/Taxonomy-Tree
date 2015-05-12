@@ -160,7 +160,10 @@ public class ClassificationTree<T>
 			return null;
 		}
 	}
-	
+	/**
+	 * General insert method
+	 * @param elements to be inserted
+	 */
 	public void insert(T[] elements)
 	{
 		if(elements == null)
@@ -225,6 +228,93 @@ public class ClassificationTree<T>
 		}
 	}
 	
+	/**
+	 * 
+	 * @param node Node object to insert
+	 * @param parent Parent node under which {@code node} to be inserted
+	 */
+	public void insert(Node<T> node, T parent)
+	{
+		if(node == null || parent == null)
+			throw new IllegalArgumentException("null argument passed");
+		
+		Node<T> parentSearch = search(parent);
+		
+		if(parentSearch == null)
+			throw new IllegalArgumentException("Parent " + parent + " not found");
+		
+		parentSearch.children.add(node);
+		node.parent = parentSearch;
+		
+		Node<T> tempNode = parentSearch;
+		
+		//update data up-to root node
+		while(tempNode.parent != null)
+		{
+			tempNode.weight += node.weight;
+			tempNode.databaseIndex.addAll(node.databaseIndex);
+			
+			tempNode = tempNode.parent;
+		}
+	}
+	
+	public void insert(Node<T> node, Node<T> parent)
+	{
+		if(node == null || parent == null)
+			throw new IllegalArgumentException("null argument passed");
+		
+		Node<T> parentSearch = search(parent);
+		
+		if(parentSearch == null)
+			throw new IllegalArgumentException("Parent " + parent.node + " not found");
+		
+		parentSearch.children.add(node);
+		node.parent = parentSearch;
+		
+		Node<T> tempNode = parentSearch;
+		
+		//update data up-to root node
+		while(tempNode.parent != null)
+		{
+			tempNode.weight += node.weight;
+			tempNode.databaseIndex.addAll(node.databaseIndex);
+			
+			tempNode = tempNode.parent;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param Searchnode node to be inserted
+	 * @param parent Node which is the parent
+	 */
+	public void insert(T Searchnode, T parent)
+	{
+		if(Searchnode == null || parent == null)
+			throw new IllegalArgumentException("null argument passed");
+		
+		Node<T> parentSearch = search(parent);
+		
+		if(parentSearch == null)
+			throw new IllegalArgumentException("Parent " + parent + " not found");
+		
+		Node<T> node = new Node<>(Searchnode);
+		
+		parentSearch.children.add(node);
+		node.parent = parentSearch;
+		
+		Node<T> tempNode = parentSearch;
+		
+		//update data up-to root node
+		while(tempNode.parent != null)
+		{
+			tempNode.weight += node.weight;
+			tempNode.databaseIndex.addAll(node.databaseIndex);
+			
+			tempNode = tempNode.parent;
+		}
+	}
+	
 	private int recalculateLeafCount()
 	{
 		int rc = 0, rh = 0;
@@ -256,16 +346,23 @@ public class ClassificationTree<T>
 		return c;
 	}
 	
+	public Node<T> search(Node<T> search)
+	{
+		Node<T> toSearch = (Node<T>) search;
+		Node<T> searched =  search(toSearch.node);
+		if(searched.equals(toSearch))
+			return toSearch;
+		else
+			return null;
+	}
 	/**
 	 * @param  search {@code search} string
 	 * @return {@code null} if not found
 	 * 		else returns {@code node}
 	 */
-	@SuppressWarnings("unchecked")
+
 	public Node<T> search(T search)
 	{
-		if(search instanceof Node<?>)
-			return search(((Node<T>) search).node);	
 		
 		if(search == null)
 			throw new IllegalArgumentException("null argument passed");
@@ -442,8 +539,7 @@ public class ClassificationTree<T>
 	public void addOrModifyWeight(T search, float weight)
 	{
 		if(search instanceof Node<?>)
-			addOrModifyWeight(((Node<T>) search).node, weight);
-		
+			addOrModifyWeight(((Node<T>) search).node, weight);	
 		
 		if(search == null)
 			throw new IllegalArgumentException("null argument passed");
@@ -591,7 +687,14 @@ public class ClassificationTree<T>
 	public void addOrModifyWeight_efficient(T search, float weight)
 	{
 		if(search instanceof Node<?>)
-			addOrModifyWeight_efficient(((Node<T>) search).node, weight);
+		{
+			Node<T> searchNode = (Node<T>) search;
+			Node<T> node = this.search(searchNode.node);
+			if(node.equals(searchNode))
+				throw new IllegalArgumentException(searchNode.node + " not exists in the tree");
+			
+			this.weightDeltaFix(searchNode, weight);
+		}
 		
 		if(search == null)
 			throw new IllegalArgumentException("null argument passed");
@@ -631,6 +734,7 @@ public class ClassificationTree<T>
 		tree.addOrModifyWeight("f", 0.5f);
 		tree.addOrModifyWeight("c", 0.5f);
 		tree.insert(new String[]{"a", "c"});
+		tree.insert("x", "a");
 		//tree.addOrModifyWeight_efficient("c", 0);
 		//tree.normalizeWeight();
 		tree.addOrModifyDatabaseIndex("c", new ArrayList<>(Arrays.asList(new Integer[]{0,1,2,3})));

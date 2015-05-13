@@ -444,6 +444,23 @@ public class ClassificationTree<T>
 	
 	/**
 	 * 
+	 * @param search leaf id to search
+	 * @return Leaf object if found else null
+	 */
+	public Node<T> searchInleaves(T search)
+	{
+		List<Node<T>> leaves = this.getAllLeaves();
+		for(Node<T> leaf : leaves)
+		{
+			if(search.equals(leaf.node))
+				return leaf;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * 
 	 * @return list of leaves
 	 */
 	@SuppressWarnings("unchecked")

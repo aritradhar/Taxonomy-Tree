@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -739,6 +740,7 @@ public class ClassificationTree<T>
 		if(node.isLeaf())
 			return node.databaseIndex;
 		
+		//make sure we are not putting duplicates
 		node.databaseIndex = new ArrayList<>();
 		
 		for(Node<T> child : node.children)
@@ -807,15 +809,17 @@ public class ClassificationTree<T>
 		//tree.delete("a");
 		tree.addOrModifyWeight("f", 0.5f);
 		tree.addOrModifyWeight("c", 0.5f);
+		tree.addOrModifyWeight("d", 0.5f);
 		tree.insert(new String[]{"a", "c"});
 		tree.insert("x", "a");
 		tree.bringLeavesToSameLevel();
 		//tree.addOrModifyWeight_efficient("c", 0);
 		//tree.normalizeWeight();
+		tree.normalize();
 		tree.addOrModifyDatabaseIndex("c", new ArrayList<>(Arrays.asList(new Integer[]{0,1,2,3})));
 		tree.addOrModifyDatabaseIndex("d", new ArrayList<>(Arrays.asList(new Integer[]{4,5,6,7})));
 		
-		System.out.println(tree.getDatabaseIndex("a"));
+		System.out.println(tree.getDatabaseIndex(ClassificationTree.ROOT_NODE));
 		
 		System.out.println(tree.getWeight(ClassificationTree.ROOT_NODE));
 		System.out.println(tree.getAllLeaves().size());

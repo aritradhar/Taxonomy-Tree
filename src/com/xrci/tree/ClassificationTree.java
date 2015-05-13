@@ -102,14 +102,20 @@ public class ClassificationTree<T>
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * May give incorrect height if any unsafe
+	 * operation is done without doing any consistency check.
+	 * Otherwise safe to use.
+	 * @return tree height
 	 */
 	public int height()
 	{
 		return this.height;
 	}
 	
+	/**
+	 * @param search node string
+	 * @return Weight
+	 */
 	@SuppressWarnings("unchecked")
 	public float getWeight(T search)
 	{
@@ -127,6 +133,11 @@ public class ClassificationTree<T>
 		return node.weight;
 	}
 	
+	/**
+	 * 
+	 * @param search Node string
+	 * @return Database indices
+	 */
 	public List<Integer> getDatabaseIndex(T search)
 	{
 		if(search == null)
@@ -140,16 +151,12 @@ public class ClassificationTree<T>
 		return node.databaseIndex;
 	}
 	
-//	public void normalizeWeight()
-//	{
-//		
-//	}
-	
-	
 	/**
-	 * bring all leaf nodes at same level
+	 * bring all leaf nodes at same level.
+	 * Uses unsafe delete method.
+	 * Handles tree consistency after 
+	 * bulk unsafe delete operations.
 	 */
-	
 	@SuppressWarnings("unchecked")
 	public void bringLeavesToSameLevel()
 	{
@@ -374,6 +381,13 @@ public class ClassificationTree<T>
 		}
 	}
 	
+	/**
+	 * Consistency checker. For any unsafe method use 
+	 * this one to repair the consistency variables of 
+	 * the tree. All the unsafe methods and consistency 
+	 * check is kept private to make it off limit. 
+	 * @return Total number of leaf nodes
+	 */
 	private int recalculateLeafCount()
 	{
 		int rc = 0, rh = 0;
@@ -419,14 +433,11 @@ public class ClassificationTree<T>
 	 * @return {@code null} if not found
 	 * 		else returns {@code node}
 	 */
-
 	public Node<T> search(T search)
-	{
-		
+	{		
 		if(search == null)
 			throw new IllegalArgumentException("null argument passed");
-			
-		
+				
 		Node<T> temp = ROOT;
 		List<Node<T>> list1 = new ArrayList<Node<T>>();
 		List<Node<T>> list2 = new ArrayList<Node<T>>();
@@ -569,6 +580,11 @@ public class ClassificationTree<T>
 		return out;
 	}
 	
+	/**
+	 * 
+	 * @param level the level number
+	 * @return List of Classification tree nodes at {@code level}
+	 */
 	public List<Node<T>> levelOrder(int level)
 	{
 		if(level < 0 || level > this.height)
@@ -607,7 +623,7 @@ public class ClassificationTree<T>
 	}
 	
 	/**
-	 * 
+	 * Safe. Check for consistency
 	 * @param search target node
 	 * @param weight new weight
 	 */
@@ -635,7 +651,7 @@ public class ClassificationTree<T>
 	}
 	
 	/**
-	 * 
+	 * Safe. Check for consistency
 	 * @param search target node
 	 * @param databaseIndex modified indices
 	 */
@@ -673,12 +689,8 @@ public class ClassificationTree<T>
 	 * {@code false} if the {@code search}
 	 * string not found
 	 */
-	@SuppressWarnings("unchecked")
 	public boolean delete(T search)
-	{
-		if(search instanceof Node<?>)
-			return delete(((Node<T>) search).node);
-		
+	{		
 		if(search == null)
 			throw new IllegalArgumentException("null argument passed");
 		
@@ -711,8 +723,8 @@ public class ClassificationTree<T>
 	/**
 	 * Unsafe delete method. Only to be used when 
 	 * to bring all the leaf nodes to the same level.
-	 * No consistency check for quick execution
-	 * Consistency check is the responsibility of the caller
+	 * No consistency check for quick execution.
+	 * Consistency check is the responsibility of the caller.
 	 * @param search
 	 */
 	
@@ -755,9 +767,10 @@ public class ClassificationTree<T>
 		{
 			total_weight += leaf.weight;
 		}
-		if(total_weight == 1.0f)
-			return;
 		
+		if(total_weight == 1.0f || total_weight == 0.0f)
+			return;
+	
 		for(Node<T> leaf : leaves)
 		{
 			leaf.weight = leaf.weight / total_weight;

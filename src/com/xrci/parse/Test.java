@@ -30,7 +30,7 @@ public class Test
 		Random rand = new Random();
 		byte[] b = new byte[8];
 		
-		for(int i = 0; i < 50000; i++)
+		for(int i = 0; i < 18000; i++)
 		{
 			if(i % 1000 == 0)
 				System.out.println(i);

@@ -18,8 +18,6 @@ package com.xrci.tree;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -164,13 +162,13 @@ public class ClassificationTree<T>
 			{
 				Node<T> tempNode = new Node<>(node);
 				Node<T> parent = node.parent;
-				this.delete(node.node);
+				this.deleteUnsafe(node);
 				int toInsertIter = this.height - node.level;
 				
 				for(int i = 0; i < toInsertIter; i++)
 				{
 					Node<T> Dummy = new Node<T>((T) "Dummy");
-					this.insert(Dummy, parent);
+					this.inserUnsafe(Dummy, parent);
 					parent = Dummy;
 				}
 				/*
@@ -180,6 +178,14 @@ public class ClassificationTree<T>
 				this.inserUnsafe(tempNode, parent);
 			}
 		}
+		//consistency check as deleteUnsafe() will not do that
+		this.normalizeDatabaseIndex();
+		//tree size fix
+		this.sizeCalled = false;
+		this.recalculateLeafCount();
+		this.size = this.recalulatedSize;
+		this.height = this.recalculatedHeight;
+		
 	}
 	
 	/**
@@ -659,7 +665,8 @@ public class ClassificationTree<T>
 	/**
 	 * experimental features
 	 * @param search {@code search} string to 
-	 * delete and all if its children
+	 * delete and all if its children.
+	 * Fully consistency check. Safe to use. Slow.
 	 * 
 	 * @return {@code boolean value}
 	 * {@code true} if found and deleted
@@ -699,6 +706,35 @@ public class ClassificationTree<T>
 		this.size = this.recalulatedSize;
 		this.height = this.recalculatedHeight;
 		return true;
+	}
+	
+	/**
+	 * Unsafe delete method. Only to be used when 
+	 * to bring all the leaf nodes to the same level.
+	 * No consistency check for quick execution
+	 * Consistency check is the responsibility of the caller
+	 * @param search
+	 */
+	
+	private void deleteUnsafe(Node<T> searchNode)
+	{
+		if(searchNode == null)
+			throw new IllegalArgumentException("null argument passed");
+		
+		List<Node<T>> neighbours = searchNode.parent.children;
+		
+		int index = 0;
+		for(Node<T> neighbour : neighbours)
+		{		
+			if(neighbour.node == searchNode.node)
+				break;
+			
+			index ++;
+		}
+		neighbours.remove(index);
+		searchNode = null;
+		this.sizeCalled = false;
+		
 	}
 
 	public void normalize()

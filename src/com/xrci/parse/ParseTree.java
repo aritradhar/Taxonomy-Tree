@@ -84,12 +84,17 @@ public class ParseTree
 		//System.out.println(ct.levelOrder(1));
 		System.out.println(root.hashCode());
 		ct.addOrModifyWeight("Modeling Clay & Dough", 0.5f);
-		
+		ct.bringLeavesToSameLevel();
+		ct.normalize();
 		//ClassificationTree ct1 = new ClassificationTree(root);
 		//System.out.println(ct1.size());
 		//System.out.println(ct1.leaves());
 		//System.out.println(ct1.height());
 		
+		System.out.println("--- After Normalize ---");
+		System.out.println("Size : " + ct.size());
+		System.out.println("Leaf nodes : " + ct.leafCount());
+		System.out.println("Max level : " + ct.height());
 		long end = System.currentTimeMillis();
 		System.out.println("Total execution time : " + (end - start) + " ms");
 	}

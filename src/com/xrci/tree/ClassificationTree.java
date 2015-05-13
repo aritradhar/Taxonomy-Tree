@@ -141,6 +141,12 @@ public class ClassificationTree<T>
 		return node.databaseIndex;
 	}
 	
+//	public void normalizeWeight()
+//	{
+//		
+//	}
+	
+	
 	/**
 	 * bring all leaf nodes at same level
 	 */
@@ -679,9 +685,31 @@ public class ClassificationTree<T>
 
 	public void normalize()
 	{
+		this.normalizeWeightProp();
 		this.normalizeDatabaseIndex();
 		this.normalizeWeight();
 	}
+	
+	/**
+	 * Make sure the leaf level have total weight 1
+	 */
+	public void normalizeWeightProp()
+	{
+		List<Node<T>> leaves = this.getAllLeaves();
+		float total_weight = 0.0f;
+		for(Node<T> leaf : leaves)
+		{
+			total_weight += leaf.weight;
+		}
+		if(total_weight == 1.0f)
+			return;
+		
+		for(Node<T> leaf : leaves)
+		{
+			leaf.weight = leaf.weight / total_weight;
+		}
+	}
+	
 	public void normalizeDatabaseIndex()
 	{
 		this.normalizeDatabaseIndex_recursive(this.ROOT);

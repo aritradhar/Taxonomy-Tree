@@ -648,6 +648,7 @@ public class ClassificationTree<T>
 		
 		node.weight = weight;
 		this.normalizeWeight();
+		this.normalizeWeightProp();
 	}
 	
 	/**

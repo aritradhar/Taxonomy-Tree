@@ -636,6 +636,12 @@ public class ClassificationTree<T>
 		if(search == null)
 			throw new IllegalArgumentException("null argument passed");
 		
+		if(weight == 0)
+		{
+			System.err.println("0 weight given. Skipped");
+			return;
+		}
+		
 		if(weight < 0)
 			throw new IllegalArgumentException("Invalid weight");
 		
@@ -844,6 +850,12 @@ public class ClassificationTree<T>
 		
 		if(weight < 0)
 			throw new IllegalArgumentException("Invalid weight");
+		
+		if(weight == 0)
+		{
+			System.err.println("0 weight given. Skipped");
+			return;
+		}
 		
 		Node<T> node = this.search(search);
 		if(node == null)

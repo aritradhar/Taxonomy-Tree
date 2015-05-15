@@ -15,6 +15,11 @@
 
 package com.xrci.tree;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -756,6 +761,10 @@ public class ClassificationTree<T>
 		
 	}
 
+	/**
+	 * Normalize the tree in one go
+	 */
+	
 	public void normalize()
 	{
 		this.normalizeWeightProp();
@@ -874,8 +883,54 @@ public class ClassificationTree<T>
 			node.weight += delta;
 		}
 	}
+	
+	/**
+	 * Store the entire tree to storage
+	 * @param file
+	 * @throws IOException 
+	 */
+	public void storeTreeData(String file) throws IOException
+	{
+		List<Node<T>> leaves = this.getAllLeaves();
+		FileWriter fw = new FileWriter(file);
+		for(Node<T> leaf : leaves)
+		{
+			fw.append(leaf.node.toString() + " " + leaf.weight + " ");
+			if(leaf.databaseIndex.size() > 0)
+			{
+				for(int i : leaf.databaseIndex)
+				{
+					fw.append(i + " ");
+				}
+			}
+			fw.append("\n");
+		}
+		fw.close();
+	}
+	
+	/**
+	 * Load the tree data from storage to tree object
+	 * @param file
+	 * @throws IOException 
+	 */
+	@SuppressWarnings("unchecked")
+	public void loadTreeData(String file) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		String str = "";
+		
+		while((str = br.readLine()) != null)
+		{
+			String []data = str.split(" ");
+			T nodeName = (T) data[0];
+			float weight = Float.parseFloat(data[1]);
+			this.addOrModifyWeight(nodeName, weight);
+		}
+		
+		br.close();
+	}
 
-	/*
+	/**
 	 * test
 	 */
 	public static void main(String[] args) 

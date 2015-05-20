@@ -960,12 +960,12 @@ public class ClassificationTree<T>
 			FileWriter fw = new FileWriter(file);
 			for(Node<T> leaf : leaves)
 			{
-				fw.append(leaf.node.toString() + " " + leaf.weight + " ");
+				fw.append(leaf.node.toString() + ">" + leaf.weight + ">");
 				if(leaf.databaseIndex.size() > 0)
 				{
 					for(int i : leaf.databaseIndex)
 					{
-						fw.append(i + " ");
+						fw.append(i + ">");
 					}
 				}
 				fw.append("\n");
@@ -1004,7 +1004,7 @@ public class ClassificationTree<T>
 
 			while((str = br.readLine()) != null)
 			{
-				String []data = str.split(" ");
+				String []data = str.split(">");
 				T nodeName = (T) data[0];
 				float weight = Float.parseFloat(data[1]);
 				this.addOrModifyWeightUnsafe(nodeName, weight);

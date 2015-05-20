@@ -106,6 +106,24 @@ public class ClassificationTree<T>
 			return this.leafCount_internal;
 		}
 	}
+	
+	/**
+	 * 
+	 * @return Maximum number of children of a node
+	 */
+	@SuppressWarnings("unchecked")
+	public int maxFanOut()
+	{
+		int fanOut = 0;
+		List<Node<T>> nodes = this.totalNodesUnder((T) ROOT_NODE);
+		for(Node<T> node : nodes)
+		{
+			if(fanOut < node.children.size())
+				fanOut = node.children.size();
+		}
+		
+		return fanOut;
+	}
 
 	/**
 	 * May give incorrect height if any unsafe

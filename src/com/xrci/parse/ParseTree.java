@@ -54,6 +54,12 @@ public class ParseTree
 		return out;
 	}
 	
+	/**
+	 * Make a classification tree from the parse tree.
+	 * Also extend the tree such that all the leaves 
+	 * are at the same level 
+	 * @return ClassificationTree object
+	 */
 	public ClassificationTree<String> makeTree()
 	{
 		ClassificationTree<String> ct = new ClassificationTree<>();
@@ -63,8 +69,10 @@ public class ParseTree
 			ct.insert(elements);
 		}
 		
+		ct.bringLeavesToSameLevel();
 		return ct;
 	}
+	
 	
 	/*
 	 * Test
@@ -84,7 +92,6 @@ public class ParseTree
 		//System.out.println(ct.levelOrder(1));
 		System.out.println(root.hashCode());
 		ct.addOrModifyWeight("Modeling Clay & Dough", 0.5f);
-		ct.bringLeavesToSameLevel();
 		
 		long start1 = System.currentTimeMillis();
 		ct.normalize();
@@ -97,15 +104,16 @@ public class ParseTree
 		System.out.println("Size : " + ct.size());
 		System.out.println("Leaf nodes : " + ct.leafCount());
 		System.out.println("Max level : " + ct.height());
+		System.out.println("Max fan-out : " + ct.maxFanOut());
 		long end = System.currentTimeMillis();
-		
-		System.out.println("Normalization time : " + (end - start1) + " ms");
-		System.out.println("Total execution time : " + (end - start) + " ms");
 		
 		ct.storeTreeData("GCT.txt");
 		
-		ct = null;
-		ct = pt.makeTree();
-		ct.loadTreeData("GCT.txt");
+		//ct = null;
+		//ct = pt.makeTree();
+		//ct.loadTreeData("GCT.txt");
+		
+		System.out.println("Normalization time : " + (end - start1) + " ms");
+		System.out.println("Total execution time : " + (end - start) + " ms");
 	}
 }

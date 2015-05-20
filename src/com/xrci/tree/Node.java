@@ -15,6 +15,9 @@
 
 package com.xrci.tree;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -69,6 +72,18 @@ public class Node<T>
 		this.parent = node.parent;
 		this.weight = node.weight;
 		this.databaseIndex = node.databaseIndex;
+	}
+	
+	public void setDatabaseIndex(String[] indexString)
+	{
+		Integer[] data = new Integer[indexString.length];
+
+		int i = 0;
+		for(String s : indexString)
+		{
+			data[i++] = Integer.parseInt(s);
+		}
+		this.databaseIndex = new ArrayList<Integer>(Arrays.asList(data));
 	}
 	
 	public boolean isLeaf()

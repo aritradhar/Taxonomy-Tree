@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Node for the classification tree
@@ -34,6 +36,7 @@ public class Node<T>
 	float weight;
 	List<Integer> databaseIndex;
 	int level;
+	Set<T> products;
 	
 	public Node(T node)
 	{
@@ -45,6 +48,7 @@ public class Node<T>
 		this.parent = null;
 		this.weight = 0.0f;
 		this.databaseIndex = Collections.emptyList();
+		this.products = Collections.emptySet();
 	}
 	
 	public Node(T node, int level)
@@ -57,6 +61,7 @@ public class Node<T>
 		this.parent = null;
 		this.weight = 0.0f;
 		this.databaseIndex = Collections.emptyList();
+		this.products = Collections.emptySet();
 	}
 	
 	/**
@@ -72,8 +77,29 @@ public class Node<T>
 		this.parent = node.parent;
 		this.weight = node.weight;
 		this.databaseIndex = node.databaseIndex;
+		this.products = node.products;
 	}
 	
+	public void addProducts(Set<T> products)
+	{
+		if(this.products.isEmpty())
+			this.products = products;
+		
+		else
+			this.products.addAll(products);
+	}
+	
+	public void addProducts(T product)
+	{
+		if(this.products.isEmpty())
+		{
+			this.products = new HashSet<>();
+			this.products.add(product);
+		}
+		
+		else
+			this.products.add(product);
+	}
 	public void setDatabaseIndex(String[] indexString)
 	{
 		Integer[] data = new Integer[indexString.length];

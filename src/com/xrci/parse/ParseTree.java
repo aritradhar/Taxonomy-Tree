@@ -47,6 +47,7 @@ public class ParseTree
 				continue;
 			
 			String[] tokens = st.split(" > ");
+			
 			out.add(tokens);
 		}
 		
@@ -81,7 +82,8 @@ public class ParseTree
 	{
 		long start = System.currentTimeMillis();
 		
-		ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\taxonomy.en-US.txt");
+		//ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\taxonomy.en-US.txt");
+		ParseTree pt = new ParseTree("C:\\Users\\w4j3yyfd\\workspace\\WebCrawler\\Merged_tree.txt");
 		//ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\text.txt");
 		ClassificationTree<String> ct = pt.makeTree();
 		Node<String> root = ct.getTree();
@@ -91,7 +93,7 @@ public class ParseTree
 		System.out.println("Max level : " + ct.height());
 		//System.out.println(ct.levelOrder(1));
 		System.out.println(root.hashCode());
-		ct.addOrModifyWeight("Modeling Clay & Dough", 0.5f);
+		//ct.addOrModifyWeight("Modeling Clay & Dough", 0.5f);
 		
 		long start1 = System.currentTimeMillis();
 		ct.normalize();

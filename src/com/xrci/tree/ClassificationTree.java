@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * n-ary tree to index product taxonomy
@@ -242,13 +243,17 @@ public class ClassificationTree<T>
 	}
 	/**
 	 * General insert method
+	 * Last element of the elements is the actual product
 	 * @param elements to be inserted
 	 */
-	public void insert(T[] elements)
+	public void insert(T[] _elements)
 	{
-		if(elements == null)
+		if(_elements == null)
 			throw new IllegalArgumentException("null argument passed");
 
+		T[] elements = Arrays.copyOf(_elements, _elements.length - 1);
+		T product = _elements[ _elements.length - 1];
+		
 		//update the max height of the tree
 		if(elements.length > this.height)
 			this.height = elements.length;
@@ -309,6 +314,8 @@ public class ClassificationTree<T>
 				}
 			}
 		}
+		
+		temp.addProducts(product);
 	}
 
 	/**
@@ -1062,9 +1069,9 @@ public class ClassificationTree<T>
 		tree.insert(new String[]{"b", "e", "f"});
 
 		//tree.delete("a");
-		tree.addOrModifyWeight("f", 0.5f);
-		tree.addOrModifyWeight("c", 0.5f);
-		tree.addOrModifyWeight("d", 0.5f);
+		//tree.addOrModifyWeight("f", 0.5f);
+		//tree.addOrModifyWeight("c", 0.5f);
+		//tree.addOrModifyWeight("d", 0.5f);
 		
 		//tree.insert("x", "a");
 		tree.bringLeavesToSameLevel();

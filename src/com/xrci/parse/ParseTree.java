@@ -30,11 +30,19 @@ public class ParseTree
 {
 	String filePath;
 	ArrayList<String[]> treeNodes;
+	boolean legacyMode;
 	
-	public ParseTree(String filePath) throws IOException
+	/**
+	 * 
+	 * @param filePath Taxonomy tree file path
+	 * @param legacyMode To make it compatible with Google's taxonomy tree
+	 * @throws IOException
+	 */
+	public ParseTree(String filePath, boolean legacyMode) throws IOException
 	{
 		this.filePath = filePath;
 		this.treeNodes = this.doParse();
+		this.legacyMode = legacyMode;
 	}	
 	
 	private ArrayList<String[]> doParse() throws IOException
@@ -48,8 +56,7 @@ public class ParseTree
 			if(st.isEmpty())
 				continue;
 			
-			String[] tokens = st.split(" > ");
-			
+			String[] tokens = st.split(" > ");		
 			out.add(tokens);
 		}
 		
@@ -67,9 +74,19 @@ public class ParseTree
 	{
 		ClassificationTree<String> ct = new ClassificationTree<>();
 
-		for(String[] elements : this.treeNodes)
+		if(this.legacyMode)
 		{
-			ct.insert(elements);
+			for(String[] elements : this.treeNodes)
+			{
+				ct.insert(elements, true);
+			}
+		}
+		else
+		{
+			for(String[] elements : this.treeNodes)
+			{
+				ct.insert(elements);
+			}
 		}
 		
 		ct.bringLeavesToSameLevel();
@@ -80,9 +97,19 @@ public class ParseTree
 	{
 		ClassificationTree<String> ct = new ClassificationTree<>();
 
-		for(String[] elements : this.treeNodes)
+		if(this.legacyMode)
 		{
-			ct.insert(elements);
+			for(String[] elements : this.treeNodes)
+			{
+				ct.insert(elements, true);
+			}
+		}
+		else
+		{
+			for(String[] elements : this.treeNodes)
+			{
+				ct.insert(elements);
+			}
 		}
 		
 		if(bringToSameLevel)
@@ -98,8 +125,8 @@ public class ParseTree
 	{
 		long start = System.currentTimeMillis();
 		
-		//ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\taxonomy.en-US.txt");
-		ParseTree pt = new ParseTree("C:\\Users\\w4j3yyfd\\workspace\\WebCrawler\\Merged_tree.txt");
+		//ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\taxonomy.en-US.txt", true);
+		ParseTree pt = new ParseTree("C:\\Users\\w4j3yyfd\\workspace\\WebCrawler\\Merged_tree.txt", false);
 		//ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\text.txt");
 		ClassificationTree<String> ct = pt.makeTree(false);
 		Node<String> root = ct.getTree();
@@ -134,6 +161,6 @@ public class ParseTree
 		System.out.println("Normalization time : " + (end - start1) + " ms");
 		System.out.println("Total execution time : " + (end - start) + " ms");
 		
-		System.out.println(Products.ProductMap.entrySet());
+		System.out.println("Total plroducts : " + Products.ProductMap.size());
 	}
 }

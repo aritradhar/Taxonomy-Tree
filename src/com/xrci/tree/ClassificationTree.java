@@ -324,6 +324,79 @@ public class ClassificationTree<T>
 	}
 
 	/**
+	 * General insert method
+	 * @param _elements
+	 * @param leagacyMode Works with google's Taxonomy tree
+	 */
+	@SuppressWarnings("unchecked")
+	public void insert(T[] elements, boolean leagacyMode)
+	{
+		if(elements == null)
+			throw new IllegalArgumentException("null argument passed");
+				
+		//update the max height of the tree
+		if(elements.length > this.height)
+			this.height = elements.length;
+
+		//needs to recalculate for the size function
+		this.sizeCalled = false;
+
+		Node<T> temp = this.ROOT;
+
+		int i = 0;
+		for(T element : elements)
+		{
+			if(element == null)
+			{
+				System.err.println("null elemnt fount in argument, skipping");
+				continue;
+			}
+
+			if(element.toString().equals(ROOT_NODE))
+			{
+				throw new IllegalArgumentException("Node name " + ROOT_NODE + " is forbidden " );
+			}
+
+			if(temp.children.isEmpty())
+			{
+				Node<T> newNode = new Node<>(element, ++i);
+				temp.children = new ArrayList<Node<T>>();
+				temp.children.add(newNode);
+				newNode.parent = temp;
+				temp = newNode;
+				size++;
+			}
+
+			else
+			{
+				boolean found = false;
+				for(Node<T> nodeIn : temp.children)
+				{
+					if(nodeIn.node.equals(element))
+					{
+						i++;
+						temp = nodeIn;
+						found = true;
+						//System.out.println("hit");
+						break;
+					}
+				}
+
+				if(!found)
+				{
+					Node<T> newNode = new Node<T>(element);
+					//temp.children = new ArrayList<Node>();
+					temp.children.add(newNode);
+					newNode.parent = temp;
+					newNode.level = newNode.parent.level + 1;
+					temp = newNode;
+					size++;
+				}
+			}
+		}
+	}
+	
+	/**
 	 * 
 	 * @param node Node object to insert
 	 * @param parent Parent node under which {@code node} to be inserted

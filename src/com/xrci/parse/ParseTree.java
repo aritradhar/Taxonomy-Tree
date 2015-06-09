@@ -23,6 +23,8 @@ import java.util.StringTokenizer;
 
 import com.xrci.tree.ClassificationTree;
 import com.xrci.tree.Node;
+import com.xrci.tree.Product;
+import com.xrci.tree.Products;
 
 public class ParseTree 
 {
@@ -74,6 +76,20 @@ public class ParseTree
 		return ct;
 	}
 	
+	public ClassificationTree<String> makeTree(boolean bringToSameLevel)
+	{
+		ClassificationTree<String> ct = new ClassificationTree<>();
+
+		for(String[] elements : this.treeNodes)
+		{
+			ct.insert(elements);
+		}
+		
+		if(bringToSameLevel)
+			ct.bringLeavesToSameLevel();
+		return ct;
+	}
+	
 	
 	/*
 	 * Test
@@ -85,7 +101,7 @@ public class ParseTree
 		//ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\taxonomy.en-US.txt");
 		ParseTree pt = new ParseTree("C:\\Users\\w4j3yyfd\\workspace\\WebCrawler\\Merged_tree.txt");
 		//ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\text.txt");
-		ClassificationTree<String> ct = pt.makeTree();
+		ClassificationTree<String> ct = pt.makeTree(false);
 		Node<String> root = ct.getTree();
 		
 		System.out.println("Size : " + ct.size());
@@ -117,5 +133,7 @@ public class ParseTree
 		
 		System.out.println("Normalization time : " + (end - start1) + " ms");
 		System.out.println("Total execution time : " + (end - start) + " ms");
+		
+		System.out.println(Products.ProductMap.entrySet());
 	}
 }

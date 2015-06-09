@@ -246,13 +246,18 @@ public class ClassificationTree<T>
 	 * Last element of the elements is the actual product
 	 * @param elements to be inserted
 	 */
+	@SuppressWarnings("unchecked")
 	public void insert(T[] _elements)
 	{
 		if(_elements == null)
 			throw new IllegalArgumentException("null argument passed");
 
 		T[] elements = Arrays.copyOf(_elements, _elements.length - 1);
-		T product = _elements[ _elements.length - 1];
+		T productName = _elements[ _elements.length - 1];
+		
+		Product<T> product = (!Products.ProductMap.containsKey(productName.toString())) ? 
+				new Product<T>(productName) : (Product<T>) Products.ProductMap.get(productName);
+
 		
 		//update the max height of the tree
 		if(elements.length > this.height)

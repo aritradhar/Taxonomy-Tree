@@ -36,7 +36,8 @@ public class Node<T>
 	float weight;
 	List<Integer> databaseIndex;
 	int level;
-	Set<T> products;
+	//HashSet will take care of duplicate input
+	Set<Product<T>> products;
 	
 	public Node(T node)
 	{
@@ -80,8 +81,14 @@ public class Node<T>
 		this.products = node.products;
 	}
 	
-	public void addProducts(Set<T> products)
+	public void addProducts(Set<Product<T>> products)
 	{
+		for(Product<T> product : products)
+		{
+			product.addParents(this);
+			Products.ProductMap.put(product.toString(), product);
+		}
+		
 		if(this.products.isEmpty())
 			this.products = products;
 		
@@ -89,17 +96,17 @@ public class Node<T>
 			this.products.addAll(products);
 	}
 	
-	public void addProducts(T product)
+	public void addProducts(Product<T> product)
 	{
 		if(this.products.isEmpty())
-		{
 			this.products = new HashSet<>();
-			this.products.add(product);
-		}
+	
+		product.addParents(this);
+		this.products.add(product);
 		
-		else
-			this.products.add(product);
+		Products.ProductMap.put(product.toString(), product);
 	}
+	
 	public void setDatabaseIndex(String[] indexString)
 	{
 		Integer[] data = new Integer[indexString.length];

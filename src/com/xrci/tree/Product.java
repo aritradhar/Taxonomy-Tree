@@ -30,6 +30,11 @@ public class Product<T>
 		this.parents = Collections.emptySet();
 	}
 	
+	public Set<Node<T>> getParents()
+	{
+		return this.parents;
+	}
+	
 	public void addParents(Set<Node<T>> parents)
 	{
 		if(this.parents.isEmpty())

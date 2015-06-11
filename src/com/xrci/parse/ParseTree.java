@@ -121,6 +121,7 @@ public class ParseTree
 	/*
 	 * Test
 	 */
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws IOException 
 	{
 		long start = System.currentTimeMillis();
@@ -162,5 +163,11 @@ public class ParseTree
 		System.out.println("Total execution time : " + (end - start) + " ms");
 		
 		System.out.println("Total plroducts : " + Products.ProductMap.size());
+		Product<String> p = (Product<String>) Products.ProductMap.get("Pampers Wipes Sensitive 56 x 12 per pack");
+		
+		for(Node<String> n : p.getParents())
+		{
+			System.out.println(ct.getTraceUptoRoot(n));
+		}
 	}
 }

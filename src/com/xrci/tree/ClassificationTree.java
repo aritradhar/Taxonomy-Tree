@@ -1135,6 +1135,25 @@ public class ClassificationTree<T>
 		}
 		this.normalize();
 	}
+	
+	public ArrayList<Node<T>> getTraceUptoRoot(Node<T> node)
+	{
+		if(node == null)
+			throw new IllegalArgumentException("null argument");
+		ArrayList<Node<T>> lst = new ArrayList<>();
+		
+		Node<T> temp = node;
+		while(temp.parent != null)
+		{
+			lst.add(temp);
+			temp = temp.parent;
+		}
+		//added root
+		lst.add(temp);
+		
+		Collections.reverse(lst);
+		return lst;
+	}
 
 	/**
 	 * test

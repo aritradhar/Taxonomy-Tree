@@ -35,7 +35,8 @@ public class ParseTree
 	/**
 	 * 
 	 * @param filePath Taxonomy tree file path
-	 * @param legacyMode To make it compatible with Google's taxonomy tree
+	 * @param legacyMode To make it compatible with Google's taxonomy tree. 
+	 * False to use with Morrisons Taxonomy tree
 	 * @throws IOException
 	 */
 	public ParseTree(String filePath, boolean legacyMode) throws IOException
@@ -68,6 +69,7 @@ public class ParseTree
 	 * Make a classification tree from the parse tree.
 	 * Also extend the tree such that all the leaves 
 	 * are at the same level 
+	 * @param bringToSameLevel true to do bringLeavesToSameLevel() operation.
 	 * @return ClassificationTree object
 	 */	
 	public ClassificationTree<String> makeTree(boolean bringToSameLevel)

@@ -18,7 +18,7 @@ package com.xrci.tree;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Products
+public class ProductStore
 {
 	public static Map<String, Product<?>> ProductMap = new HashMap<>();
 }

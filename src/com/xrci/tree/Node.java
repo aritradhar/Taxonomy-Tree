@@ -86,7 +86,7 @@ public class Node<T>
 		for(Product<T> product : products)
 		{
 			product.addParents(this);
-			Products.ProductMap.put(product.toString(), product);
+			ProductStore.ProductMap.put(product.toString(), product);
 		}
 		
 		if(this.products.isEmpty())
@@ -104,7 +104,7 @@ public class Node<T>
 		product.addParents(this);
 		this.products.add(product);
 		
-		Products.ProductMap.put(product.toString(), product);
+		ProductStore.ProductMap.put(product.toString(), product);
 	}
 	
 	public void setDatabaseIndex(String[] indexString)

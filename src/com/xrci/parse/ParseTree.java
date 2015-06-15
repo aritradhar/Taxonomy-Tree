@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
 import com.xrci.tree.ClassificationTree;
 import com.xrci.tree.Node;
 import com.xrci.tree.Product;
-import com.xrci.tree.Products;
+import com.xrci.tree.ProductStore;
 
 public class ParseTree 
 {
@@ -143,8 +143,8 @@ public class ParseTree
 		System.out.println("Normalization time : " + (end - start1) + " ms");
 		System.out.println("Total execution time : " + (end - start) + " ms");
 		
-		System.out.println("Total plroducts : " + Products.ProductMap.size());
-		Product<String> p = (Product<String>) Products.ProductMap.get("Quavers Cheese Flavour Crisps Multipack 6 x 16.4g");
+		System.out.println("Total plroducts : " + ProductStore.ProductMap.size());
+		Product<String> p = (Product<String>) ProductStore.ProductMap.get("Quavers Cheese Flavour Crisps Multipack 6 x 16.4g");
 		
 		for(Node<String> n : p.getParents())
 		{

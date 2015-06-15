@@ -256,8 +256,8 @@ public class ClassificationTree<T>
 		T productName = _elements[ _elements.length - 2];
 		String url = (String) _elements[_elements.length - 1];
 		
-		Product<T> product = (!Products.ProductMap.containsKey(productName.toString())) ? 
-				new Product<T>(productName, url) : (Product<T>) Products.ProductMap.get(productName);
+		Product<T> product = (!ProductStore.ProductMap.containsKey(productName.toString())) ? 
+				new Product<T>(productName, url) : (Product<T>) ProductStore.ProductMap.get(productName);
 
 		
 		//update the max height of the tree

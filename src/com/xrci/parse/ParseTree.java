@@ -19,7 +19,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 import com.xrci.tree.ClassificationTree;
 import com.xrci.tree.Node;
@@ -31,7 +30,7 @@ public class ParseTree
 	String filePath;
 	ArrayList<String[]> treeNodes;
 	boolean legacyMode;
-	
+
 	/**
 	 * 
 	 * @param filePath Taxonomy tree file path
@@ -45,26 +44,27 @@ public class ParseTree
 		this.treeNodes = this.doParse();
 		this.legacyMode = legacyMode;
 	}	
-	
+
 	private ArrayList<String[]> doParse() throws IOException
 	{
 		ArrayList<String[]> out = new ArrayList<String[]>();
 		BufferedReader br = new BufferedReader(new FileReader(this.filePath));
 		String st = "";
-		 
+
 		while((st = br.readLine()) != null)
 		{
-			if(st.isEmpty())
+			if(st.isEmpty()) {
 				continue;
-			
+			}
+
 			String[] tokens = st.split(">");		
 			out.add(tokens);
 		}
-		
+
 		br.close();
 		return out;
 	}
-	
+
 	/**
 	 * Make a classification tree from the parse tree.
 	 * Also extend the tree such that all the leaves 
@@ -90,13 +90,14 @@ public class ParseTree
 				ct.insert(elements);
 			}
 		}
-		
-		if(bringToSameLevel)
+
+		if(bringToSameLevel) {
 			ct.bringLeavesToSameLevel();
+		}
 		return ct;
 	}
-	
-	
+
+
 	/*
 	 * Test
 	 */
@@ -104,48 +105,48 @@ public class ParseTree
 	public static void main(String[] args) throws IOException 
 	{
 		long start = System.currentTimeMillis();
-		
+
 		//ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\taxonomy.en-US.txt", true);
 		ParseTree pt = new ParseTree("C:\\Users\\w4j3yyfd\\workspace\\WebCrawler\\Merged_tree.txt", false);
 		//ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\text.txt");
 		ClassificationTree<String> ct = pt.makeTree(false);
 		Node<String> root = ct.getTree();
-		
+
 		System.out.println("Size : " + ct.size());
 		System.out.println("Leaf nodes : " + ct.leafCount());
 		System.out.println("Max level : " + ct.height());
 		//System.out.println(ct.levelOrder(1));
 		//System.out.println(root.hashCode());
 		//ct.addOrModifyWeight("Modeling Clay & Dough", 0.5f);
-		
+
 		long start1 = System.currentTimeMillis();
 		ct.normalize();
-		
+
 		//ct.bringLeavesToSameLevel();
 		//ClassificationTree ct1 = new ClassificationTree(root);
 		//System.out.println(ct1.size());
 		//System.out.println(ct1.leaves());
 		//System.out.println(ct1.height());
-		
+
 		System.out.println("--- After Normalize ---");
 		System.out.println("Size : " + ct.size());
 		System.out.println("Leaf nodes : " + ct.leafCount());
 		System.out.println("Max level : " + ct.height());
 		System.out.println("Max fan-out : " + ct.maxFanOut());
 		long end = System.currentTimeMillis();
-		
+
 		ct.storeTreeData("GCT.txt");
-		
+
 		//ct = null;
 		//ct = pt.makeTree();
 		//ct.loadTreeData("GCT.txt");
-		
+
 		System.out.println("Normalization time : " + (end - start1) + " ms");
 		System.out.println("Total execution time : " + (end - start) + " ms");
-		
+
 		System.out.println("Total plroducts : " + ProductStore.ProductMap.size());
 		Product<String> p = (Product<String>) ProductStore.ProductMap.get("Quavers Cheese Flavour Crisps Multipack 6 x 16.4g");
-		
+
 		for(Node<String> n : p.getParents())
 		{
 			System.out.println(ct.getTraceUptoRoot(n));

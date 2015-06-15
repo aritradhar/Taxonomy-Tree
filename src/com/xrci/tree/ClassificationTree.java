@@ -252,11 +252,12 @@ public class ClassificationTree<T>
 		if(_elements == null)
 			throw new IllegalArgumentException("null argument passed");
 
-		T[] elements = Arrays.copyOf(_elements, _elements.length - 1);
-		T productName = _elements[ _elements.length - 1];
+		T[] elements = Arrays.copyOf(_elements, _elements.length - 2);
+		T productName = _elements[ _elements.length - 2];
+		String url = (String) _elements[_elements.length - 1];
 		
 		Product<T> product = (!Products.ProductMap.containsKey(productName.toString())) ? 
-				new Product<T>(productName) : (Product<T>) Products.ProductMap.get(productName);
+				new Product<T>(productName, url) : (Product<T>) Products.ProductMap.get(productName);
 
 		
 		//update the max height of the tree
@@ -328,7 +329,6 @@ public class ClassificationTree<T>
 	 * @param _elements
 	 * @param leagacyMode Works with google's Taxonomy tree
 	 */
-	@SuppressWarnings("unchecked")
 	public void insert(T[] elements, boolean leagacyMode)
 	{
 		if(elements == null)

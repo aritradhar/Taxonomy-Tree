@@ -56,7 +56,7 @@ public class ParseTree
 			if(st.isEmpty())
 				continue;
 			
-			String[] tokens = st.split(" > ");		
+			String[] tokens = st.split(">");		
 			out.add(tokens);
 		}
 		
@@ -69,30 +69,7 @@ public class ParseTree
 	 * Also extend the tree such that all the leaves 
 	 * are at the same level 
 	 * @return ClassificationTree object
-	 */
-	public ClassificationTree<String> makeTree()
-	{
-		ClassificationTree<String> ct = new ClassificationTree<>();
-
-		if(this.legacyMode)
-		{
-			for(String[] elements : this.treeNodes)
-			{
-				ct.insert(elements, true);
-			}
-		}
-		else
-		{
-			for(String[] elements : this.treeNodes)
-			{
-				ct.insert(elements);
-			}
-		}
-		
-		ct.bringLeavesToSameLevel();
-		return ct;
-	}
-	
+	 */	
 	public ClassificationTree<String> makeTree(boolean bringToSameLevel)
 	{
 		ClassificationTree<String> ct = new ClassificationTree<>();
@@ -136,11 +113,13 @@ public class ParseTree
 		System.out.println("Leaf nodes : " + ct.leafCount());
 		System.out.println("Max level : " + ct.height());
 		//System.out.println(ct.levelOrder(1));
-		System.out.println(root.hashCode());
+		//System.out.println(root.hashCode());
 		//ct.addOrModifyWeight("Modeling Clay & Dough", 0.5f);
 		
 		long start1 = System.currentTimeMillis();
 		ct.normalize();
+		
+		//ct.bringLeavesToSameLevel();
 		//ClassificationTree ct1 = new ClassificationTree(root);
 		//System.out.println(ct1.size());
 		//System.out.println(ct1.leaves());
@@ -163,7 +142,7 @@ public class ParseTree
 		System.out.println("Total execution time : " + (end - start) + " ms");
 		
 		System.out.println("Total plroducts : " + Products.ProductMap.size());
-		Product<String> p = (Product<String>) Products.ProductMap.get("Pampers Wipes Sensitive 56 x 12 per pack");
+		Product<String> p = (Product<String>) Products.ProductMap.get("Quavers Cheese Flavour Crisps Multipack 6 x 16.4g");
 		
 		for(Node<String> n : p.getParents())
 		{

@@ -22,11 +22,19 @@ import java.util.Set;
 public class Product<T> 
 {
 	T productName;
+	String url;
 	Set<Node<T>> parents;
 	
 	public Product(T productName) 
 	{
 		this.productName = productName;
+		this.parents = Collections.emptySet();
+	}
+	
+	public Product(T productName, String url)
+	{
+		this.productName = productName;
+		this.url = url;
 		this.parents = Collections.emptySet();
 	}
 	

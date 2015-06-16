@@ -145,9 +145,11 @@ public class ParseTree
 		System.out.println("Total execution time : " + (end - start) + " ms");
 
 		System.out.println("Total plroducts : " + ProductStore.ProductMap.size());
-		Product<String> p = (Product<String>) ProductStore.ProductMap.get("Quavers Cheese Flavour Crisps Multipack 6 x 16.4g");
+		Product p = ProductStore.ProductMap.get("Quavers Cheese Flavour Crisps Multipack 6 x 16.4g");
 
 		p.getProductImage();
+		p.getProductPrice();
+		
 		for(Node<String> n : p.getParents())
 		{
 			System.out.println(ct.getTraceUptoRoot(n));

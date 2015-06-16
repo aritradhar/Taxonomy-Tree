@@ -92,7 +92,7 @@ public class ClassificationTree<T> {
 		}
 	}
 
-	/**
+	/**n
 	 * 
 	 * @return Maximum number of children of a node
 	 */
@@ -243,9 +243,9 @@ public class ClassificationTree<T> {
 		T productName = _elements[_elements.length - 2];
 		String url = (String) _elements[_elements.length - 1];
 
-		Product<T> product = (!ProductStore.ProductMap.containsKey(productName
-				.toString())) ? new Product<T>(productName, url)
-				: (Product<T>) ProductStore.ProductMap.get(productName);
+		Product product = (!ProductStore.ProductMap.containsKey(productName
+				.toString())) ? new Product(productName.toString(), url)
+				: ProductStore.ProductMap.get(productName);
 
 		// update the max height of the tree
 		if (elements.length > this.height) {
@@ -302,7 +302,7 @@ public class ClassificationTree<T> {
 			}
 		}
 
-		temp.addProducts(product);
+		temp.addProduct(product);
 	}
 
 	/**

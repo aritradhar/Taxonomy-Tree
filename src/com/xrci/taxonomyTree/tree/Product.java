@@ -32,31 +32,56 @@ import org.jsoup.select.Elements;
 
 import com.xrci.taxonomyTree.env.ENV;
 
-public class Product<T> 
+/**
+ * Represents a listed product
+ * @author Aritra Dhar
+ *	
+ */
+public class Product 
 {
-	T productName;
+	String productName;
 	String url;
-	Set<Node<T>> parents;
+	Set<Node<String>> parents;
+	Document doc;
 	
-	public Product(T productName) 
+	public Product(String productName) 
 	{
 		this.productName = productName;
 		this.parents = Collections.emptySet();
+		doc = null;
 	}
 	
-	public Product(T productName, String url)
+	public Product(String productName, String url)
 	{
 		this.productName = productName;
 		this.url = url;
 		this.parents = Collections.emptySet();
+		doc = null;
 	}
 	
-	public Set<Node<T>> getParents()
+	
+	public Set<Node<String>> getParents()
 	{
 		return this.parents;
 	}
 	
-	public void addParents(Set<Node<T>> parents)
+	public void makeDoc()
+	{
+		try 
+		{
+			if(this.doc == null)
+			{
+				ENV.setProxy();
+				this.doc = Jsoup.connect(url).timeout(3000).userAgent("Mozilla").get();
+			}
+		}	
+		catch (Exception e) 
+		{
+			System.err.println("Error in document parsing");
+		}
+	}
+	
+	public void addParents(Set<Node<String>> parents)
 	{
 		if(this.parents.isEmpty())
 		{
@@ -68,14 +93,14 @@ public class Product<T>
 		}
 	}
 	
-	public void addParents(Node<T> parent)
+	public void addParent(Node<String> parent)
 	{
 		if(this.parents.isEmpty())
 		{
 			this.parents = new HashSet<>();
 		}
-		this.parents.add(parent);
 		
+		this.parents.add(parent);		
 	}
 	
 	@Override
@@ -84,31 +109,26 @@ public class Product<T>
 		return this.productName.toString();
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) 
 	{
-		Product<T> other = (Product<T>) obj;
+		Product other = (Product) obj;
 		return this.toString().equals(other.toString());
 	}
 	
+	/**
+	 * This method will get the image in jpg format 
+	 * from the product page of Morrisons
+	 * @return {@code BufferedImage} object of the image
+	 */
 	public BufferedImage getProductImage()
 	{
-		ENV.setProxy();
 		BufferedImage image = null;
-		Document doc = null;
 		String imageUrl = null;
 		
-		try 
-		{
-			doc = Jsoup.connect(url).timeout(3000).userAgent("Mozilla").get();
-		} 
-		catch (Exception e) 
-		{
-			System.err.println("Error in document parsing");
-		}
+		this.makeDoc();
 		
-		Elements galleryImageElements = doc.select("ul#galleryImages");
+		Elements galleryImageElements = this.doc.select("ul#galleryImages");
 		
 		for(Element element : galleryImageElements)
 		{
@@ -129,6 +149,7 @@ public class Product<T>
 			System.err.println("Error in image download");
 		}
 		
+		/*		
 		File outputfile = new File("saved.jpg");
 	    try 
 	    {
@@ -138,7 +159,24 @@ public class Product<T>
 	    {
 			System.err.println("Error in writing the image into the disk");
 		}
-		
+		*/
 		return image;
+	}
+	
+	/**
+	 * 
+	 * @return {@code ProductPrice} object of the product
+	 */
+	public ProductPrice getProductPrice()
+	{
+		this.makeDoc();
+		ProductPrice productPrice = new ProductPrice(this);
+		Elements priceElements = doc.select("div#productPrice");
+		
+		for(Element element : priceElements)
+		{
+			
+		}
+		return productPrice;
 	}
 }

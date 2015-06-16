@@ -15,10 +15,15 @@
 
 package com.xrci.taxonomyTree.tree;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class ProductStore
+public class ProductPrice 
 {
-	public static Map<String, Product> ProductMap = new HashMap<>();
+	public Product product;
+	public String wasPrice;
+	public String nowPrice;
+	public String currency;
+	
+	public ProductPrice(Product product) 
+	{
+		this.product = product;
+	}
 }

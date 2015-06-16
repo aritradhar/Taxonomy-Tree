@@ -37,7 +37,7 @@ public class Node<T>
 	List<Integer> databaseIndex;
 	int level;
 	//HashSet will take care of duplicate input
-	Set<Product<T>> products;
+	Set<Product> products;
 	
 	public Node(T node)
 	{
@@ -81,11 +81,12 @@ public class Node<T>
 		this.products = node.products;
 	}
 	
-	public void addProducts(Set<Product<T>> products)
+	@SuppressWarnings("unchecked")
+	public void addProducts(Set<Product> products)
 	{
-		for(Product<T> product : products)
+		for(Product product : products)
 		{
-			product.addParents(this);
+			product.addParent((Node<String>) this);
 			ProductStore.ProductMap.put(product.toString(), product);
 		}
 		
@@ -96,12 +97,13 @@ public class Node<T>
 			this.products.addAll(products);
 	}
 	
-	public void addProducts(Product<T> product)
+	@SuppressWarnings("unchecked")
+	public void addProduct(Product product)
 	{
 		if(this.products.isEmpty())
 			this.products = new HashSet<>();
 	
-		product.addParents(this);
+		product.addParent((Node<String>) this);
 		this.products.add(product);
 		
 		ProductStore.ProductMap.put(product.toString(), product);

@@ -147,7 +147,7 @@ public class ParseTree
 		System.out.println("Total plroducts : " + ProductStore.ProductMap.size());
 		Product p = ProductStore.ProductMap.get("Quavers Cheese Flavour Crisps Multipack 6 x 16.4g");
 
-		p.getProductImage();
+		//p.getProductImage();
 		p.getProductPrice();
 		
 		for(Node<String> n : p.getParents())

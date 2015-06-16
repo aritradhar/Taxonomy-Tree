@@ -21,6 +21,7 @@ public class ProductPrice
 	public String wasPrice;
 	public String nowPrice;
 	public String currency;
+	public String pricePerWeight;
 	
 	public ProductPrice(Product product) 
 	{

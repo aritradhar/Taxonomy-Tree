@@ -118,7 +118,8 @@ public class Product
 	
 	/**
 	 * This method will get the image in jpg format 
-	 * from the product page of Morrisons
+	 * from the product page of Morrisons.
+	 * Execution will take time as it will query online.
 	 * @return {@code BufferedImage} object of the image
 	 */
 	public BufferedImage getProductImage()
@@ -164,19 +165,27 @@ public class Product
 	}
 	
 	/**
-	 * 
+	 * Execution will take time as it will query online.
 	 * @return {@code ProductPrice} object of the product
 	 */
 	public ProductPrice getProductPrice()
 	{
 		this.makeDoc();
 		ProductPrice productPrice = new ProductPrice(this);
-		Elements priceElements = doc.select("div#productPrice");
+		Element priceElement = this.doc.select("div.productPrice").first();
 		
-		for(Element element : priceElements)
-		{
-			
-		}
+		Element wasPriceElement = priceElement.select("span.wasPrice").first();
+		productPrice.wasPrice = wasPriceElement.text();
+		
+		Element nowPriceElement = priceElement.select("span.nowPrice").first();
+		productPrice.nowPrice = nowPriceElement.text();
+		
+		Element currencyElement = priceElement.select("meta[content=GBP]").first();
+		productPrice.currency = currencyElement.attr("content");
+		
+		Element pricePerWeightElement = priceElement.select("p.pricePerWeight").first();
+		productPrice.pricePerWeight = pricePerWeightElement.text();
+		
 		return productPrice;
 	}
 }

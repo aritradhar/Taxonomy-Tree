@@ -15,15 +15,22 @@
 
 package com.xrci.taxonomyTree.tree;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.imageio.ImageIO;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import com.xrci.taxonomyTree.env.ENV;
 
 public class Product<T> 
 {
@@ -85,21 +92,52 @@ public class Product<T>
 		return this.toString().equals(other.toString());
 	}
 	
-	public Image getProductImage()
+	public BufferedImage getProductImage()
 	{
-		Image image = null;
+		ENV.setProxy();
+		BufferedImage image = null;
 		Document doc = null;
+		String imageUrl = null;
 		
 		try 
 		{
-			doc = Jsoup.parse("https://groceries.morrisons.com/webshop/startWebshop.do");
+			doc = Jsoup.connect(url).timeout(3000).userAgent("Mozilla").get();
 		} 
 		catch (Exception e) 
 		{
+			System.err.println("Error in document parsing");
+		}
+		
+		Elements galleryImageElements = doc.select("ul#galleryImages");
+		
+		for(Element element : galleryImageElements)
+		{
+			Elements els = element.select("a[href]");
+			//only one image element
+			Element imageRefElement = els.get(0);
+			imageUrl =  imageRefElement.attr("abs:href");		
+		}
+		
+		try 
+		{
+		    URL url = new URL(imageUrl);
+		    image = ImageIO.read(url);
+		} 
+		
+		catch (IOException e) 
+		{
 			System.err.println("Error in image download");
 		}
-		System.out.println(doc.data());
-		Elements imageElement = doc.select("a[href]");
+		
+		File outputfile = new File("saved.jpg");
+	    try 
+	    {
+			ImageIO.write(image, ENV.IMAGE_WRITE_OPTION, outputfile);
+		} 
+	    catch (IOException e) 
+	    {
+			System.err.println("Error in writing the image into the disk");
+		}
 		
 		return image;
 	}

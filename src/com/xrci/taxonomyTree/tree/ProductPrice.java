@@ -4,7 +4,7 @@
 //Research Engineer																  	* *
 //Xerox Research Center India													    * *
 //Bangalore, India																    * *
-//--------------------------------------------------------------------------------- * * 
+//--------------------------------------------------------------------------------- * *
 ///////////////////////////////////////////////// 									* *
 //The program will do the following:::: // 											* *
 ///////////////////////////////////////////////// 									* *
@@ -12,19 +12,16 @@
 //*********************************************************************************** *
 //*************************************************************************************
 
-
 package com.xrci.taxonomyTree.tree;
 
-public class ProductPrice 
-{
+public class ProductPrice {
 	public Product product;
 	public String wasPrice;
 	public String nowPrice;
 	public String currency;
 	public String pricePerWeight;
-	
-	public ProductPrice(Product product) 
-	{
+
+	public ProductPrice(Product product) {
 		this.product = product;
 	}
 }

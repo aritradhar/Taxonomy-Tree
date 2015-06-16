@@ -92,7 +92,8 @@ public class ClassificationTree<T> {
 		}
 	}
 
-	/**n
+	/**
+	 * n
 	 * 
 	 * @return Maximum number of children of a node
 	 */
@@ -233,7 +234,6 @@ public class ClassificationTree<T> {
 	 * @param elements
 	 *            to be inserted
 	 */
-	@SuppressWarnings("unchecked")
 	public void insert(T[] _elements) {
 		if (_elements == null) {
 			throw new IllegalArgumentException("null argument passed");
@@ -245,64 +245,64 @@ public class ClassificationTree<T> {
 
 		Product product = (!ProductStore.ProductMap.containsKey(productName
 				.toString())) ? new Product(productName.toString(), url)
-				: ProductStore.ProductMap.get(productName);
+		: ProductStore.ProductMap.get(productName);
 
-		// update the max height of the tree
-		if (elements.length > this.height) {
-			this.height = elements.length;
-		}
+				// update the max height of the tree
+				if (elements.length > this.height) {
+					this.height = elements.length;
+				}
 
-		// needs to recalculate for the size function
-		this.sizeCalled = false;
+				// needs to recalculate for the size function
+				this.sizeCalled = false;
 
-		Node<T> temp = this.ROOT;
+				Node<T> temp = this.ROOT;
 
-		int i = 0;
-		for (T element : elements) {
-			if (element == null) {
-				System.err.println("null elemnt fount in argument, skipping");
-				continue;
-			}
+				int i = 0;
+				for (T element : elements) {
+					if (element == null) {
+						System.err.println("null elemnt fount in argument, skipping");
+						continue;
+					}
 
-			if (element.toString().equals(ROOT_NODE)) {
-				throw new IllegalArgumentException("Node name " + ROOT_NODE
-						+ " is forbidden ");
-			}
+					if (element.toString().equals(ROOT_NODE)) {
+						throw new IllegalArgumentException("Node name " + ROOT_NODE
+								+ " is forbidden ");
+					}
 
-			if (temp.children.isEmpty()) {
-				Node<T> newNode = new Node<>(element, ++i);
-				temp.children = new ArrayList<Node<T>>();
-				temp.children.add(newNode);
-				newNode.parent = temp;
-				temp = newNode;
-				size++;
-			}
+					if (temp.children.isEmpty()) {
+						Node<T> newNode = new Node<>(element, ++i);
+						temp.children = new ArrayList<Node<T>>();
+						temp.children.add(newNode);
+						newNode.parent = temp;
+						temp = newNode;
+						size++;
+					}
 
-			else {
-				boolean found = false;
-				for (Node<T> nodeIn : temp.children) {
-					if (nodeIn.node.equals(element)) {
-						i++;
-						temp = nodeIn;
-						found = true;
-						// System.out.println("hit");
-						break;
+					else {
+						boolean found = false;
+						for (Node<T> nodeIn : temp.children) {
+							if (nodeIn.node.equals(element)) {
+								i++;
+								temp = nodeIn;
+								found = true;
+								// System.out.println("hit");
+								break;
+							}
+						}
+
+						if (!found) {
+							Node<T> newNode = new Node<T>(element);
+							// temp.children = new ArrayList<Node>();
+							temp.children.add(newNode);
+							newNode.parent = temp;
+							newNode.level = newNode.parent.level + 1;
+							temp = newNode;
+							size++;
+						}
 					}
 				}
 
-				if (!found) {
-					Node<T> newNode = new Node<T>(element);
-					// temp.children = new ArrayList<Node>();
-					temp.children.add(newNode);
-					newNode.parent = temp;
-					newNode.level = newNode.parent.level + 1;
-					temp = newNode;
-					size++;
-				}
-			}
-		}
-
-		temp.addProduct(product);
+				temp.addProduct(product);
 	}
 
 	/**

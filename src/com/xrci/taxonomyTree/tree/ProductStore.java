@@ -4,7 +4,7 @@
 //Research Engineer																  	* *
 //Xerox Research Center India													    * *
 //Bangalore, India																    * *
-//--------------------------------------------------------------------------------- * * 
+//--------------------------------------------------------------------------------- * *
 ///////////////////////////////////////////////// 									* *
 //The program will do the following:::: // 											* *
 ///////////////////////////////////////////////// 									* *
@@ -12,13 +12,11 @@
 //*********************************************************************************** *
 //*************************************************************************************
 
-
 package com.xrci.taxonomyTree.tree;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProductStore
-{
+public class ProductStore {
 	public static Map<String, Product> ProductMap = new HashMap<>();
 }

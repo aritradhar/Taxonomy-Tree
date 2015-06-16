@@ -12,7 +12,7 @@
 //*********************************************************************************** *
 //*************************************************************************************
 
-package com.xrci.tree;
+package com.xrci.taxonomyTree.tree;
 
 import java.io.BufferedReader;
 import java.io.File;

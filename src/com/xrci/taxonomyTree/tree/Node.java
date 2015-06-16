@@ -13,7 +13,7 @@
 //*************************************************************************************
 
 
-package com.xrci.tree;
+package com.xrci.taxonomyTree.tree;
 
 import java.util.ArrayList;
 import java.util.Arrays;

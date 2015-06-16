@@ -13,11 +13,17 @@
 //*************************************************************************************
 
 
-package com.xrci.tree;
+package com.xrci.taxonomyTree.tree;
 
+import java.awt.Image;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 public class Product<T> 
 {
@@ -77,5 +83,24 @@ public class Product<T>
 	{
 		Product<T> other = (Product<T>) obj;
 		return this.toString().equals(other.toString());
+	}
+	
+	public Image getProductImage()
+	{
+		Image image = null;
+		Document doc = null;
+		
+		try 
+		{
+			doc = Jsoup.parse("https://groceries.morrisons.com/webshop/startWebshop.do");
+		} 
+		catch (Exception e) 
+		{
+			System.err.println("Error in image download");
+		}
+		System.out.println(doc.data());
+		Elements imageElement = doc.select("a[href]");
+		
+		return image;
 	}
 }

@@ -13,17 +13,17 @@
 //*************************************************************************************
 
 
-package com.xrci.parse;
+package com.xrci.taxonomyTree.parse;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.xrci.tree.ClassificationTree;
-import com.xrci.tree.Node;
-import com.xrci.tree.Product;
-import com.xrci.tree.ProductStore;
+import com.xrci.taxonomyTree.tree.ClassificationTree;
+import com.xrci.taxonomyTree.tree.Node;
+import com.xrci.taxonomyTree.tree.Product;
+import com.xrci.taxonomyTree.tree.ProductStore;
 
 public class ParseTree 
 {
@@ -147,6 +147,7 @@ public class ParseTree
 		System.out.println("Total plroducts : " + ProductStore.ProductMap.size());
 		Product<String> p = (Product<String>) ProductStore.ProductMap.get("Quavers Cheese Flavour Crisps Multipack 6 x 16.4g");
 
+		p.getProductImage();
 		for(Node<String> n : p.getParents())
 		{
 			System.out.println(ct.getTraceUptoRoot(n));

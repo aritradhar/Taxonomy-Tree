@@ -162,4 +162,21 @@ public class Product {
 
 		return productPrice;
 	}
+
+	/**
+	 * This method will modify the weight to all the parent leaf node in the
+	 * classification tree
+	 * 
+	 * @param ct
+	 *            {@code ClassificationTree} object
+	 * @param weight
+	 *            new weight
+	 */
+	public void addorModifyWeight(ClassificationTree<String> ct, float weight) {
+		for (Node<String> parent : this.parents) {
+			parent.weight = weight;
+		}
+		ct.normalizeWeightProp();
+		ct.normalizeWeight();
+	}
 }

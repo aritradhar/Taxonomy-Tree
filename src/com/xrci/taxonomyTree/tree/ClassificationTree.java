@@ -243,66 +243,68 @@ public class ClassificationTree<T> {
 		T productName = _elements[_elements.length - 2];
 		String url = (String) _elements[_elements.length - 1];
 
-		Product product = (!ProductStore.ProductMap.containsKey(productName
-				.toString())) ? new Product(productName.toString(), url)
-		: ProductStore.ProductMap.get(productName);
+		Product product = (!ProductStore.ProductMap.containsKey(productName.toString())) ? new Product(productName.toString(), url) : ProductStore.ProductMap.get(productName);
 
-				// update the max height of the tree
-				if (elements.length > this.height) {
-					this.height = elements.length;
-				}
+		if(!ProductStore.ProductMap.containsKey(productName.toString()))
+			ProductStore.ProductMap.put(productName.toString(), product);
+		
+		// update the max height of the tree
+		if (elements.length > this.height) {
+			this.height = elements.length;
+		}
 
-				// needs to recalculate for the size function
-				this.sizeCalled = false;
+		// needs to recalculate for the size function
+		this.sizeCalled = false;
 
-				Node<T> temp = this.ROOT;
+		Node<T> temp = this.ROOT;
 
-				int i = 0;
-				for (T element : elements) {
-					if (element == null) {
-						System.err.println("null elemnt fount in argument, skipping");
-						continue;
-					}
+		int i = 0;
+		for (T element : elements) {
+			if (element == null) {
+				System.err.println("null elemnt fount in argument, skipping");
+				continue;
+			}
 
-					if (element.toString().equals(ROOT_NODE)) {
-						throw new IllegalArgumentException("Node name " + ROOT_NODE
-								+ " is forbidden ");
-					}
+			if (element.toString().equals(ROOT_NODE)) {
+				throw new IllegalArgumentException("Node name " + ROOT_NODE
+						+ " is forbidden ");
+			}
 
-					if (temp.children.isEmpty()) {
-						Node<T> newNode = new Node<>(element, ++i);
-						temp.children = new ArrayList<Node<T>>();
-						temp.children.add(newNode);
-						newNode.parent = temp;
-						temp = newNode;
-						size++;
-					}
+			if (temp.children.isEmpty()) {
+				Node<T> newNode = new Node<>(element, ++i);
+				temp.children = new ArrayList<Node<T>>();
+				temp.children.add(newNode);
+				newNode.parent = temp;
+				temp = newNode;
+				size++;
+			}
 
-					else {
-						boolean found = false;
-						for (Node<T> nodeIn : temp.children) {
-							if (nodeIn.node.equals(element)) {
-								i++;
-								temp = nodeIn;
-								found = true;
-								// System.out.println("hit");
-								break;
-							}
-						}
-
-						if (!found) {
-							Node<T> newNode = new Node<T>(element);
-							// temp.children = new ArrayList<Node>();
-							temp.children.add(newNode);
-							newNode.parent = temp;
-							newNode.level = newNode.parent.level + 1;
-							temp = newNode;
-							size++;
-						}
+			else {
+				boolean found = false;
+				for (Node<T> nodeIn : temp.children) {
+					if (nodeIn.node.equals(element)) {
+						i++;
+						temp = nodeIn;
+						found = true;
+						// System.out.println("hit");
+						break;
 					}
 				}
 
-				temp.addProduct(product);
+				if (!found) {
+					Node<T> newNode = new Node<T>(element);
+					// temp.children = new ArrayList<Node>();
+					temp.children.add(newNode);
+					newNode.parent = temp;
+					newNode.level = newNode.parent.level + 1;
+					temp = newNode;
+					size++;
+				}
+			}
+		}
+
+		temp.addProduct(product);
+
 	}
 
 	/**
@@ -726,9 +728,6 @@ public class ClassificationTree<T> {
 	 */
 	@SuppressWarnings("unchecked")
 	public void addOrModifyWeight(T search, float weight) {
-		if (search instanceof Node<?>) {
-			addOrModifyWeight(((Node<T>) search).node, weight);
-		}
 
 		if (search == null) {
 			throw new IllegalArgumentException("null argument passed");
@@ -757,6 +756,65 @@ public class ClassificationTree<T> {
 		node.weight = weight;
 		this.normalizeWeight();
 		this.normalizeWeightProp();
+	}
+
+	/**
+	 * This is added only to use in Morrisons as there can 
+	 * be same node which is both internal and lead :|
+	 * 
+	 * Need to do consistency check
+	 * @param searchNode {@code Node} object
+	 * @param weight new weight
+	 */
+	public void addOrModifyWeight(Node<T> searchNode, float weight)
+	{
+		if (searchNode == null) {
+			throw new IllegalArgumentException("null argument passed");
+		}
+
+		if (weight == 0) {
+			System.err.println("0 weight given. Skipped");
+			return;
+		}
+
+		if (weight < 0) {
+			throw new IllegalArgumentException("Invalid weight");
+		}
+
+		searchNode.weight = weight;
+	}
+
+	/**
+	 * Optimized for Morrisons classification tree
+	 * 
+	 * @param searchNode
+	 * @param weight
+	 */
+	public void addOrModifyWeight_leaf(Node<T> searchNode, float weight)
+	{
+		if (searchNode == null) {
+			throw new IllegalArgumentException("null argument passed");
+		}
+
+		if (weight == 0) {
+			System.err.println("0 weight given. Skipped");
+			return;
+		}
+
+		if (weight < 0) {
+			throw new IllegalArgumentException("Invalid weight");
+		}
+
+		List<Node<T>> leaves = this.getAllLeaves();
+		for(Node<T> leaf : leaves)
+		{
+			if(leaf.equals(searchNode))
+			{
+				leaf.weight = weight;
+				//debug
+				System.out.println("hit");
+			}
+		}
 	}
 
 	/**
@@ -1005,6 +1063,8 @@ public class ClassificationTree<T> {
 	 * Experimental feature to change the weight only through the path to the
 	 * root node without changing the entire tree
 	 * 
+	 * need to do consistency check
+	 * 
 	 * @param node
 	 * @param weight
 	 */
@@ -1040,7 +1100,7 @@ public class ClassificationTree<T> {
 					+ " not exists in the tree");
 		}
 
-		this.weightDeltaFix(node, weight);
+		this.weightDeltaFix(node, weight);	
 
 	}
 

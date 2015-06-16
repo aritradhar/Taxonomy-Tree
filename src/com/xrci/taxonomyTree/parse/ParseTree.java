@@ -137,17 +137,22 @@ public class ParseTree {
 		System.out.println("Normalization time : " + (end - start1) + " ms");
 		System.out.println("Total execution time : " + (end - start) + " ms");
 
-		System.out.println("Total plroducts : "
+		System.out.println("Total products : "
 				+ ProductStore.ProductMap.size());
 		Product p = ProductStore.ProductMap
 				.get("Quavers Cheese Flavour Crisps Multipack 6 x 16.4g");
+		
+		p.addorModifyWeight(ct, 0.5f);
 
 		/*
-		 * for(Product pr : ProductStore.ProductMap.values()) { BufferedImage br
-		 * = pr.getProductImage(); ImageIO.write(br, "jpg", new
-		 * File("ProductImages\\" + pr.toString().replaceAll("\\.", "_") +
-		 * ".jpg")); System.out.println(" downloaded..."); }
+		 * for(Product pr : ProductStore.ProductMap.values()) 
+		 * { 
+		 * 	BufferedImage br = pr.getProductImage(); ImageIO.write(br, "jpg", new
+		 * 	File("ProductImages\\" + pr.toString().replaceAll("\\.", "_") +
+		 * 	".jpg"));
+		 * 	System.out.println(" downloaded..."); }
 		 */
+		
 		// p.getProductImage();
 		// p.getProductPrice();
 

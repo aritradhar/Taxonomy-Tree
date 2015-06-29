@@ -794,9 +794,10 @@ public class ClassificationTree<T> implements Serializable{
 	}
 
 	/**
-	 * Optimized for Morrisons classification tree
+	 * Optimized for Morrisons classification tree.
+	 * normalized to 1 is not supported.
 	 * 
-	 * @param searchNode
+	 * @param searchNodeight 
 	 * @param weight
 	 */
 	public void addOrModifyWeight_leaf(Node<T> searchNode, float weight)

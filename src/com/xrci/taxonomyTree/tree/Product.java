@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -179,14 +180,17 @@ public class Product implements Serializable{
 	 */
 	public void addorModifyWeight(ClassificationTree<String> ct, float weight) {
 		for (Node<String> parent : this.parents) {
-			parent.weight = weight;
+			//parent.weight = weight;
+			ct.addOrModifyWeight_leaf(parent, weight);
 		}
 		//ct.normalizeWeightProp();
-		ct.normalizeWeight();
+		//ct.normalizeWeight();
 	}
 	
-	public void addorModifyDatabaseIndex(ClassificationTree<String> ct, float weight)
+	public void addorModifyDatabaseIndex(ClassificationTree<String> ct, List<Integer> databaseIndex)
 	{
-		
+		for (Node<String> parent : this.parents) {
+			ct.addOrModifyDatabaseIndex_leaf(parent, databaseIndex);
+		}
 	}
 }

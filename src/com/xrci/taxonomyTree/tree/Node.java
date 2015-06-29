@@ -14,6 +14,7 @@
 
 package com.xrci.taxonomyTree.tree;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,7 +27,11 @@ import java.util.Set;
  * 
  * @author Aritra Dhar
  */
-public class Node<T> {
+public class Node<T> implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2327875316489501551L;
 	int id;
 	T node;
 	List<Node<T>> children;

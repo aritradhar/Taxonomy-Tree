@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,7 +33,11 @@ import java.util.List;
  * 
  *         </p>
  */
-public class ClassificationTree<T> {
+public class ClassificationTree<T> implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -317766179709642912L;
 	public static Node<?> DUMMY_NODE;
 	static {
 		DUMMY_NODE = new Node<String>("Dummy");

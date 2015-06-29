@@ -16,6 +16,7 @@ package com.xrci.taxonomyTree.tree;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,7 +37,11 @@ import com.xrci.taxonomyTree.env.ENV;
  * @author Aritra Dhar
  *
  */
-public class Product {
+public class Product implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5735941776550441097L;
 	String productName;
 	String url;
 	Set<Node<String>> parents;

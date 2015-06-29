@@ -15,8 +15,10 @@
 package com.xrci.taxonomyTree.parse;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import com.xrci.taxonomyTree.tree.ClassificationTree;
@@ -141,7 +143,7 @@ public class ParseTree {
 				+ ProductStore.ProductMap.size());
 		Product p = ProductStore.ProductMap
 				.get("Quavers Cheese Flavour Crisps Multipack 6 x 16.4g");
-		
+
 		p.addorModifyWeight(ct, 0.5f);
 
 		/*
@@ -152,12 +154,13 @@ public class ParseTree {
 		 * 	".jpg"));
 		 * 	System.out.println(" downloaded..."); }
 		 */
-		
+
 		// p.getProductImage();
 		// p.getProductPrice();
 
 		for (Node<String> n : p.getParents()) {
 			System.out.println(ct.getTraceUptoRoot(n));
 		}
+
 	}
 }

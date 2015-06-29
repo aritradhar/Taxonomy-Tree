@@ -181,7 +181,12 @@ public class Product implements Serializable{
 		for (Node<String> parent : this.parents) {
 			parent.weight = weight;
 		}
-		ct.normalizeWeightProp();
+		//ct.normalizeWeightProp();
 		ct.normalizeWeight();
+	}
+	
+	public void addorModifyDatabaseIndex(ClassificationTree<String> ct, float weight)
+	{
+		
 	}
 }

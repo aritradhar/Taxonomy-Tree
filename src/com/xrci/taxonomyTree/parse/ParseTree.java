@@ -162,5 +162,14 @@ public class ParseTree {
 			System.out.println(ct.getTraceUptoRoot(n));
 		}
 
+		ct.storeTreeDataNew("tx.txt");
+		
+		ParseTree pt1 = new ParseTree(
+				"C:\\Users\\w4j3yyfd\\workspace\\WebCrawler\\Merged_tree.txt",
+				false);
+		// ParseTree pt = new ParseTree("C:\\Work\\Projects\\PAMM\\text.txt");
+		ClassificationTree<String> ct1 = pt1.makeTree(false);
+		ct1.loadTreeDataNew("tx.txt");
+		ct1.storeTreeDataNew("tx1.txt");
 	}
 }

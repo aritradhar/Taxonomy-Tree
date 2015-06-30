@@ -1339,6 +1339,27 @@ public class ClassificationTree<T> implements Serializable{
 		Collections.reverse(lst);
 		return lst;
 	}
+	
+	/**
+	 * Randomized algo to select top k elements
+	 * @param k Top {@code k} nodes to fetch
+	 * @return
+	 */
+	public ArrayList<Node<T>> getTopKLeaves(int k)
+	{
+		List<Node<T>> leaves = this.getAllLeaves();
+		ArrayList<Node<T>> nonZeroWeightLeaves = new ArrayList<>(); 
+		
+		for(Node<T> leaf : leaves)
+		{
+			if(leaf.weight > 0.0f){
+				nonZeroWeightLeaves.add(leaf);
+			}
+		}
+		
+		//TODO
+		return nonZeroWeightLeaves;
+	}
 
 	/**
 	 * test

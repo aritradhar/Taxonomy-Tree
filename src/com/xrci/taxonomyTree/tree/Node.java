@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -157,4 +158,12 @@ public class Node<T> implements Serializable{
 	public String toString() {
 		return this.node.toString();
 	}
+	
+}
+
+class NodeComparator implements Comparator<Node<?>> {
+    @Override
+    public int compare(Node<?> node1, Node<?> node2) {  
+        return Float.compare(node1.weight, node2.weight);
+    }
 }

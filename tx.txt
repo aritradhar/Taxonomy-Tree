@@ -1,4 +1,4 @@
-Food Cupboard>Crisps, Snacks & Nuts>Kids Snacking>0.25
-Business to Business>Nurseries>Food Cupboard>Savoury Snacks>0.25
-Business to Business>Care Homes>Food Cupboard>Crisps, Snacks & Nuts>0.25
-Food Cupboard>Crisps, Snacks & Nuts>Crisps & Snacks>Multipacks>Single Flavours Multipacks>0.25
+Food Cupboard>Crisps, Snacks & Nuts>Kids Snacking>0.5
+Business to Business>Nurseries>Food Cupboard>Savoury Snacks>0.5
+Business to Business>Care Homes>Food Cupboard>Crisps, Snacks & Nuts>0.5
+Food Cupboard>Crisps, Snacks & Nuts>Crisps & Snacks>Multipacks>Single Flavours Multipacks>0.5

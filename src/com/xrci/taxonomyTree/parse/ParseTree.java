@@ -20,6 +20,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.xrci.taxonomyTree.tree.ClassificationTree;
 import com.xrci.taxonomyTree.tree.Node;
@@ -163,7 +164,7 @@ public class ParseTree {
 		}
 
 		ct.storeTreeDataNew("tx.txt");
-		
+		/*
 		ParseTree pt1 = new ParseTree(
 				"C:\\Users\\w4j3yyfd\\workspace\\WebCrawler\\Merged_tree.txt",
 				false);
@@ -171,5 +172,7 @@ public class ParseTree {
 		ClassificationTree<String> ct1 = pt1.makeTree(false);
 		ct1.loadTreeDataNew("tx.txt");
 		ct1.storeTreeDataNew("tx1.txt");
+		*/
+		System.out.println(ct.getTopKLeaves(5, new Random()));
 	}
 }

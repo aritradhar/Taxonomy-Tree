@@ -22,9 +22,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * n-ary tree to index product taxonomy as a generic classification tree
@@ -34,7 +36,7 @@ import java.util.List;
  * 
  *         </p>
  */
-public class ClassificationTree<T> implements Serializable{
+public class ClassificationTree<T> implements Serializable {
 	/**
 	 * 
 	 */
@@ -74,6 +76,7 @@ public class ClassificationTree<T> implements Serializable{
 
 	/**
 	 * This will return the head of the classification tree
+	 * 
 	 * @return ROOT node
 	 */
 	public Node<T> getTree() {
@@ -253,11 +256,14 @@ public class ClassificationTree<T> implements Serializable{
 		T productName = _elements[_elements.length - 2];
 		String url = (String) _elements[_elements.length - 1];
 
-		Product product = (!ProductStore.ProductMap.containsKey(productName.toString())) ? new Product(productName.toString(), url) : ProductStore.ProductMap.get(productName);
+		Product product = (!ProductStore.ProductMap.containsKey(productName
+				.toString())) ? new Product(productName.toString(), url)
+				: ProductStore.ProductMap.get(productName);
 
-		if(!ProductStore.ProductMap.containsKey(productName.toString()))
+		if (!ProductStore.ProductMap.containsKey(productName.toString())) {
 			ProductStore.ProductMap.put(productName.toString(), product);
-		
+		}
+
 		// update the max height of the tree
 		if (elements.length > this.height) {
 			this.height = elements.length;
@@ -736,7 +742,6 @@ public class ClassificationTree<T> implements Serializable{
 	 * @param weight
 	 *            new weight
 	 */
-	@SuppressWarnings("unchecked")
 	public void addOrModifyWeight(T search, float weight) {
 
 		if (search == null) {
@@ -769,15 +774,17 @@ public class ClassificationTree<T> implements Serializable{
 	}
 
 	/**
-	 * This is added only to use in Morrisons as there can 
-	 * be same node which is both internal and lead :|
+	 * This is added only to use in Morrisons as there can be same node which is
+	 * both internal and lead :|
 	 * 
 	 * Need to do consistency check
-	 * @param searchNode {@code Node} object
-	 * @param weight new weight
+	 * 
+	 * @param searchNode
+	 *            {@code Node} object
+	 * @param weight
+	 *            new weight
 	 */
-	public void addOrModifyWeight(Node<T> searchNode, float weight)
-	{
+	public void addOrModifyWeight(Node<T> searchNode, float weight) {
 		if (searchNode == null) {
 			throw new IllegalArgumentException("null argument passed");
 		}
@@ -795,14 +802,13 @@ public class ClassificationTree<T> implements Serializable{
 	}
 
 	/**
-	 * Optimized for Morrisons classification tree.
-	 * normalized to 1 is not supported.
+	 * Optimized for Morrisons classification tree. normalized to 1 is not
+	 * supported.
 	 * 
-	 * @param searchNodeight 
+	 * @param searchNodeight
 	 * @param weight
 	 */
-	public void addOrModifyWeight_leaf(Node<T> searchNode, float weight)
-	{
+	public void addOrModifyWeight_leaf(Node<T> searchNode, float weight) {
 		if (searchNode == null) {
 			throw new IllegalArgumentException("null argument passed");
 		}
@@ -815,25 +821,26 @@ public class ClassificationTree<T> implements Serializable{
 		if (weight < 0) {
 			throw new IllegalArgumentException("Invalid weight");
 		}
-		
+
 		searchNode.weight = weight;
 		this.normalizeWeight();
 	}
-	
-	public void addOrModifyDatabaseIndex_leaf(Node<T> searchNode, List<Integer> databaseIndex)
-	{
+
+	public void addOrModifyDatabaseIndex_leaf(Node<T> searchNode,
+			List<Integer> databaseIndex) {
 		if (searchNode == null) {
 			throw new IllegalArgumentException("null argument passed");
 		}
-		
+
 		if (databaseIndex.size() == 0) {
 			System.err.println("0 size database index given. Skipped");
 			return;
 		}
 
-		if(searchNode.databaseIndex.isEmpty())
+		if (searchNode.databaseIndex.isEmpty()) {
 			searchNode.databaseIndex = new ArrayList<>();
-			
+		}
+
 		searchNode.databaseIndex.addAll(databaseIndex);
 		this.normalizeDatabaseIndex();
 	}
@@ -1019,18 +1026,16 @@ public class ClassificationTree<T> implements Serializable{
 	 * {@code normalizeDatabaseIndex()} {@code normalizeWeight()}
 	 */
 
-	public void normalize() 
-	{
+	public void normalize() {
 		this.normalizeWeightProp();
 		this.normalizeDatabaseIndex();
 		this.normalizeWeight();
 	}
 
 	/**
-	 * Make sure the leaf level have total weight 1
-	 * This may create a problem.
-	 * Now we are going to just add all the weight and 
-	 * normalize them when need to fetch advertisements.
+	 * Make sure the leaf level have total weight 1 This may create a problem.
+	 * Now we are going to just add all the weight and normalize them when need
+	 * to fetch advertisements.
 	 */
 	public void normalizeWeightProp() {
 		List<Node<T>> leaves = this.getAllLeaves();
@@ -1054,7 +1059,7 @@ public class ClassificationTree<T> implements Serializable{
 	public void normalizeDatabaseIndex() {
 		this.normalizeDatabaseIndex_recursive(this.ROOT);
 	}
-	
+
 	private List<Integer> normalizeDatabaseIndex_recursive(Node<T> node) {
 		if (node.isLeaf()) {
 			return node.databaseIndex;
@@ -1076,7 +1081,6 @@ public class ClassificationTree<T> implements Serializable{
 	public void normalizeWeight() {
 		this.normalizeWeight_recursive(this.ROOT);
 	}
-	
 
 	private float normalizeWeight_recursive(Node<T> node) {
 		if (node.isLeaf()) {
@@ -1132,7 +1136,7 @@ public class ClassificationTree<T> implements Serializable{
 					+ " not exists in the tree");
 		}
 
-		this.weightDeltaFix(node, weight);	
+		this.weightDeltaFix(node, weight);
 
 	}
 
@@ -1177,28 +1181,30 @@ public class ClassificationTree<T> implements Serializable{
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * Store the entire tree to storage.
-	 * This is to be used for Morrisons taxonomy tree.
-	 * @param file path to the file in String
+	 * Store the entire tree to storage. This is to be used for Morrisons
+	 * taxonomy tree.
+	 * 
+	 * @param file
+	 *            path to the file in String
 	 */
-	public void storeTreeDataNew(String file)
-	{
+	public void storeTreeDataNew(String file) {
 		if (file == null || file.length() == 0) {
 			throw new IllegalArgumentException("Illigal file argument");
 		}
-		
+
 		List<Node<T>> leaves = this.getAllLeaves();
-		
+
 		try {
 			FileWriter fw = new FileWriter(file);
 			for (Node<T> leaf : leaves) {
-				if(leaf.weight == 0)
+				if (leaf.weight == 0) {
 					continue;
+				}
 				ArrayList<Node<T>> trace = this.getTraceUptoRoot(leaf);
-				
-				for(Node<T> traceNode : trace){
+
+				for (Node<T> traceNode : trace) {
 					fw.append(traceNode.toString() + ">");
 				}
 				fw.append(leaf.weight + "\n");
@@ -1261,10 +1267,10 @@ public class ClassificationTree<T> implements Serializable{
 		}
 		this.normalize();
 	}
-	
+
 	/**
-	 * Load the tree data from storage to tree object.
-	 * To be used with Morrisons taxonomy trees
+	 * Load the tree data from storage to tree object. To be used with Morrisons
+	 * taxonomy trees
 	 * 
 	 * @param file
 	 *            path to the file in String
@@ -1286,8 +1292,8 @@ public class ClassificationTree<T> implements Serializable{
 			while ((str = br.readLine()) != null) {
 				String[] data = str.split(">");
 				String[] trace = Arrays.copyOfRange(data, 0, data.length - 1);
-				float weight = Float.parseFloat(data[data.length-1]);
-				
+				float weight = Float.parseFloat(data[data.length - 1]);
+
 				Node<T> foundNode = this.goToNodeFromTrace((T[]) trace);
 				this.addOrModifyWeight_leaf(foundNode, weight);
 			}
@@ -1299,28 +1305,26 @@ public class ClassificationTree<T> implements Serializable{
 		}
 		this.normalize();
 	}
-	
-	private Node<T> goToNodeFromTrace(T[] trace)
-	{
+
+	private Node<T> goToNodeFromTrace(T[] trace) {
 		Node<T> temp = ROOT;
-		for(T nodeName : trace)
-		{
-			for(Node<T> child : temp.children)
-			{
-				if(child.node.toString().equals(nodeName.toString()))
-				{
+		for (T nodeName : trace) {
+			for (Node<T> child : temp.children) {
+				if (child.node.toString().equals(nodeName.toString())) {
 					temp = child;
 					break;
 				}
 			}
 		}
-		
+
 		return temp;
 	}
 
 	/**
 	 * Give back a stack trace up to root node
-	 * @param node Starting point for back tracing
+	 * 
+	 * @param node
+	 *            Starting point for back tracing
 	 * @return
 	 */
 	public ArrayList<Node<T>> getTraceUptoRoot(Node<T> node) {
@@ -1335,34 +1339,94 @@ public class ClassificationTree<T> implements Serializable{
 			temp = temp.parent;
 		}
 		// added root
-		//lst.add(temp);
+		// lst.add(temp);
 
 		Collections.reverse(lst);
 		return lst;
 	}
-	
+
 	/**
-	 * Randomized algo to select top k elements
-	 * @param k Top {@code k} nodes to fetch
+	 * Select top k elements
+	 * 
+	 * @param k
+	 *            Top {@code k} nodes to fetch
 	 * @return
 	 */
-	public ArrayList<Node<T>> getTopKLeaves(int k)
-	{
-		List<Node<T>> leaves = this.getAllLeaves();
-		ArrayList<Node<T>> nonZeroWeightLeaves = new ArrayList<>(); 
+	public Set<Node<T>> getTopKLeaves(int k, Random rand) {
+		List<Node<T>> leaves = new ArrayList<>(this.getAllLeaves());
+		int i = 0;
+
+		Collections.sort(leaves, new NodeComparator());
 		
-		for(Node<T> leaf : leaves)
-		{
-			if(leaf.weight > 0.0f){
-				nonZeroWeightLeaves.add(leaf);
+		Float total = 0.0f;
+		for (Node<T> leaf : leaves) {
+			total += leaf.weight;
+		}
+		// normalize
+		for (Node<T> leaf : leaves) {
+			leaf.weight /= total;
+		}
+
+		Set<Node<T>> topKLeaves = new HashSet<>();
+		Float cumulativeWeight = 0.0f;
+
+		for (Node<T> leaf : leaves) {
+
+			Float p = rand.nextFloat();
+			if (i == k) {
+				break;
+			}
+			cumulativeWeight += leaf.weight;
+
+			if (cumulativeWeight >= p) {
+				topKLeaves.add(leaf);
+				i++;
 			}
 		}
-		Collections.sort(nonZeroWeightLeaves, new NodeComparator());
-		ArrayList<Node<T>> topKLeaves = new ArrayList<>();
-		for(Node<T> nonZeroWeightLeaf : nonZeroWeightLeaves){
-			topKLeaves.add(nonZeroWeightLeaf);
+		if (topKLeaves.size() < k) {
+			int left = k - topKLeaves.size();
+			int t = 0;
+			for (Node<T> leaf : leaves) {
+				if (t == left) {
+					break;
+				}
+				if (topKLeaves.contains(leaf)) {
+					continue;
+				} else {
+					topKLeaves.add(leaf);
+					t++;
+				}
+			}
 		}
-		
+
+		return topKLeaves;
+	}
+
+	/**
+	 * Select top k elements
+	 * 
+	 * @param k
+	 *            Top {@code k} nodes to fetch
+	 * @return
+	 */
+	public ArrayList<Node<T>> getTopKLeaves(int k) {
+		List<Node<T>> leaves = this.getAllLeaves();
+		int i = 0;
+
+		leaves.sort(new NodeComparator());
+		// Collections.sort(leaves, new NodeComparator());
+		ArrayList<Node<T>> topKLeaves = new ArrayList<>();
+
+		for (Node<T> leaf : leaves) {
+
+			if (i == k) {
+				break;
+			}
+
+			topKLeaves.add(leaf);
+			i++;
+		}
+
 		return topKLeaves;
 	}
 

@@ -28,7 +28,7 @@ import java.util.Set;
  * 
  * @author Aritra Dhar
  */
-public class Node<T> implements Serializable{
+public class Node<T> implements Serializable, Comparable<Node<T>>{
 	/**
 	 * 
 	 */
@@ -158,12 +158,35 @@ public class Node<T> implements Serializable{
 	public String toString() {
 		return this.node.toString();
 	}
+
+	/**
+	 * needs reverse sort 
+	 */
+	@Override
+	public int compareTo(Node<T> other) {
+		
+		if(this.weight == other.weight) return 0;
+		else if (this.weight > other.weight) return -1;
+		else return 1;
+		
+		//return Float.compare(this.weight, other.weight);
+	}
 	
 }
 
+/**
+ * Compare {@code Node} based on weights for reverse sort
+ * @author Aritra Dhar
+ *
+ */
 class NodeComparator implements Comparator<Node<?>> {
     @Override
-    public int compare(Node<?> node1, Node<?> node2) {  
-        return Float.compare(node1.weight, node2.weight);
+    public int compare(Node<?> node1, Node<?> node2) { 
+    	/*System.out.println(node1.weight +"  "+ node2.weight);
+        return Float.compare(node1.weight, node2.weight);*/
+    	
+    	if(node1.weight == node2.weight) return 0;
+		else if (node1.weight > node2.weight) return -1;
+		else return 1;
     }
 }

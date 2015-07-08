@@ -33,6 +33,17 @@ public class Node<T> implements Serializable, Comparable<Node<T>>{
 	 * 
 	 */
 	private static final long serialVersionUID = -2327875316489501551L;
+	/**
+	 * Only holds advertisements ID
+	 * Spatial paper experiment only
+	 */
+	public List<String> advertisements;
+	/**
+	 * If this particular category has advertisement
+	 * Spatial paper experiment only
+	 */
+	public boolean isAdvertisementExists;
+	
 	int id;
 	T node;
 	List<Node<T>> children;
@@ -108,6 +119,10 @@ public class Node<T> implements Serializable, Comparable<Node<T>>{
 		this.products.add(product);
 
 		ProductStore.ProductMap.put(product.toString(), product);
+	}
+	
+	public void setAdvertisements(List<String> advertisements){
+		this.advertisements = advertisements;
 	}
 
 	public void setDatabaseIndex(String[] indexString) {

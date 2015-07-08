@@ -1074,6 +1074,28 @@ public class ClassificationTree<T> implements Serializable {
 
 		return node.databaseIndex;
 	}
+	
+	/**
+	 * Propagate the advertisement list upto the root node
+	 */
+	public void normalizeAdvertisements() {
+		this.normalizeAdvertisement_recursive(this.ROOT);
+	}
+	
+	private List<String> normalizeAdvertisement_recursive(Node<T> node) {
+		if (node.isLeaf()) {
+			return node.advertisements;
+		}
+
+		// make sure we are not putting duplicates
+		node.advertisements = new ArrayList<>();
+
+		for (Node<T> child : node.children) {
+			node.advertisements.addAll(normalizeAdvertisement_recursive(child));
+		}
+
+		return node.advertisements;
+	}
 
 	/**
 	 * Propagate weights upto root

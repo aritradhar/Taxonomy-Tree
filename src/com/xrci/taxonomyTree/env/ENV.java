@@ -25,6 +25,7 @@ import org.tukaani.xz.XZInputStream;
 import org.tukaani.xz.XZOutputStream;
 
 public class ENV {
+	public static final boolean PAPER_TEST = true;
 	public static final int TIMEOUT_RETRY = 5;
 	public static final String proxyServer = "proxy.eur.xerox.com";
 	public static final String proxyPort = "8000";

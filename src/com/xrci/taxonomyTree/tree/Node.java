@@ -64,6 +64,8 @@ public class Node<T> implements Serializable, Comparable<Node<T>>{
 		this.weight = 0.0f;
 		this.databaseIndex = Collections.emptyList();
 		this.products = Collections.emptySet();
+		this.isAdvertisementExists = false;
+		this.advertisements = Collections.emptyList();
 	}
 
 	public Node(T node, int level) {
@@ -76,6 +78,8 @@ public class Node<T> implements Serializable, Comparable<Node<T>>{
 		this.weight = 0.0f;
 		this.databaseIndex = Collections.emptyList();
 		this.products = Collections.emptySet();
+		this.isAdvertisementExists = false;
+		this.advertisements = Collections.emptyList();
 	}
 
 	/**
@@ -93,6 +97,8 @@ public class Node<T> implements Serializable, Comparable<Node<T>>{
 		this.weight = node.weight;
 		this.databaseIndex = node.databaseIndex;
 		this.products = node.products;
+		this.isAdvertisementExists = node.isAdvertisementExists;
+		this.advertisements = node.advertisements;
 	}
 
 	@SuppressWarnings("unchecked")

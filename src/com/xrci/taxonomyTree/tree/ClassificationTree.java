@@ -1096,7 +1096,33 @@ public class ClassificationTree<T> implements Serializable {
 
 		return node.advertisements;
 	}
-
+	
+	/**
+	 * Propagate the IsAdExists list upto the root node
+	 */
+	public void normalizeIsAdExists() {
+		List<Node<T>> leaves = this.getAllLeaves();
+		
+		for(Node<T> leaf : leaves){
+			Node<T> temp = leaf;
+			
+			if(!temp.isAdvertisementExists)
+				continue;
+			
+			while(true)
+			{
+				if(temp.parent == null)
+					break;
+				
+				if(temp.parent.isAdvertisementExists)
+					break;
+				else
+					temp.parent.isAdvertisementExists = true;
+				temp = temp.parent;
+			}
+		}
+	}
+	
 	/**
 	 * Propagate weights upto root
 	 */
@@ -1455,7 +1481,7 @@ public class ClassificationTree<T> implements Serializable {
 	/**
 	 * test
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		ClassificationTree<String> tree = new ClassificationTree<>();
 		tree.insert(new String[] { "a", "c" });
 		tree.insert(new String[] { "a", "d" });
@@ -1494,5 +1520,5 @@ public class ClassificationTree<T> implements Serializable {
 
 		tree.loadTreeData("tree.txt");
 		tree.storeTreeData("treeR.txt");
-	}
+	}*/
 }

@@ -15,10 +15,14 @@
 package com.xrci.taxonomyTree.tree;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1476,6 +1480,23 @@ public class ClassificationTree<T> implements Serializable {
 		}
 
 		return topKLeaves;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ClassificationTree<T> deepClone()
+	{
+		 try {
+		     ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		     ObjectOutputStream oos = new ObjectOutputStream(baos);
+		     oos.writeObject(this);
+		     ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+		     ObjectInputStream ois = new ObjectInputStream(bais);
+		     return (ClassificationTree<T>) ois.readObject();
+		   }
+		   catch (Exception e) {
+		     System.err.println("Error happed in clone phase");
+		     return null;
+		   }
 	}
 
 	/**

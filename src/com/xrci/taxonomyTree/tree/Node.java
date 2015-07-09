@@ -45,7 +45,7 @@ public class Node<T> implements Serializable, Comparable<Node<T>>{
 	public boolean isAdvertisementExists;
 	
 	int id;
-	T node;
+	public T node;
 	List<Node<T>> children;
 	Node<T> parent;
 	float weight;

@@ -21,6 +21,7 @@ import java.util.List;
 
 import com.xrci.taxonomyTree.parse.ParseTree;
 import com.xrci.taxonomyTree.tree.ClassificationTree;
+import com.xrci.taxonomyTree.tree.Node;
 
 public class MargeExperiment {
 
@@ -30,15 +31,21 @@ public class MargeExperiment {
 		ClassificationTree<String> ct = pt.makeTree(false);
 		
 		List<ClassificationTree<String>> profiles = new ArrayList<ClassificationTree<String>>();
+		List<Node<String>> leaves = ct.getAllLeaves();
+		List<String> leafNames = new ArrayList<String>();
+		for(Node<String> leaf : leaves){
+			leafNames.add(leaf.node);
+		}
 		
 		long start = System.currentTimeMillis();	
-		for(int i = 0; i < 1000; i++)
+		for(int i = 0; i < 5000; i++)
 		{
-			ct.deepClone();
+			profiles.add(ct.deepClone());
 		}
 		long end = System.currentTimeMillis();
-		double time = (double)((end - start)/1000);
+		double time = (double)((end - start)/5000);
 		System.out.println("Avg time of clone : " + time + " ms");
+		System.out.println("Time : " + (end - start) + " ms");
 
 		System.out.println("Size : " + ct.size());
 		System.out.println("Leaf nodes : " + ct.leafCount());

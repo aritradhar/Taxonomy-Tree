@@ -18,6 +18,7 @@ package com.xrci.taxonomyTree.test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.xrci.taxonomyTree.parse.ParseTree;
 import com.xrci.taxonomyTree.tree.ClassificationTree;
@@ -33,17 +34,27 @@ public class MargeExperiment {
 		List<ClassificationTree<String>> profiles = new ArrayList<ClassificationTree<String>>();
 		List<Node<String>> leaves = ct.getAllLeaves();
 		List<String> leafNames = new ArrayList<String>();
+		int leafCount = ct.leafCount();
 		for(Node<String> leaf : leaves){
 			leafNames.add(leaf.node);
 		}
-		
+		Random rand = new Random();
 		long start = System.currentTimeMillis();	
-		for(int i = 0; i < 5000; i++)
+		for(int i = 0; i < 1000; i++)
 		{
-			profiles.add(ct.deepClone());
+			ClassificationTree<String> temp = ct.deepClone();
+			for(int j = 0; j < 50; j++){
+				int t = rand.nextInt(leafCount);
+				float tempWeight = rand.nextFloat();
+				temp.addOrModifyWeight_leaf(temp.search(leafNames.get(t)), tempWeight);
+			}
+			profiles.add(temp);
 		}
 		long end = System.currentTimeMillis();
-		double time = (double)((end - start)/5000);
+		double time = (double)((end - start)/1000);
+		
+		
+		
 		System.out.println("Avg time of clone : " + time + " ms");
 		System.out.println("Time : " + (end - start) + " ms");
 

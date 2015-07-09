@@ -1035,6 +1035,10 @@ public class ClassificationTree<T> implements Serializable {
 		this.normalizeDatabaseIndex();
 		this.normalizeWeight();
 	}
+	
+	public void normalize_leaf(){
+		//TODO
+	}
 
 	/**
 	 * Make sure the leaf level have total weight 1 This may create a problem.

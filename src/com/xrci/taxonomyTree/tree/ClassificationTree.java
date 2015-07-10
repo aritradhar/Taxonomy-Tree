@@ -78,6 +78,7 @@ public class ClassificationTree<T> implements Serializable {
 	public ClassificationTree() {
 		this.ROOT = new Node<T>((T) ROOT_NODE);
 		sizeCalled = false;
+		this.nodeMap = new NodeMap<>();
 	}
 
 	/**
@@ -1510,6 +1511,7 @@ public class ClassificationTree<T> implements Serializable {
 		   }
 		   catch (Exception e) {
 		     System.err.println("Error happed in clone phase");
+		     e.printStackTrace();
 		     return null;
 		   }
 	}

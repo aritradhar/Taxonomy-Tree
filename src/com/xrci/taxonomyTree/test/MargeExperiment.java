@@ -40,18 +40,19 @@ public class MargeExperiment {
 		}
 		Random rand = new Random();
 		long start = System.currentTimeMillis();	
-		for(int i = 0; i < 1000; i++)
+		for(int i = 0; i < 200; i++)
 		{
 			ClassificationTree<String> temp = ct.deepClone();
 			for(int j = 0; j < 50; j++){
 				int t = rand.nextInt(leafCount);
 				float tempWeight = rand.nextFloat();
+				//temp.addOrModifyWeight_leaf(temp.search(leafNames.get(t)), tempWeight);
 				temp.addOrModifyWeight_leaf(temp.getNodeMap().NODE_MAP.get(leafNames.get(t)), tempWeight);
 			}
 			profiles.add(temp);
 		}
 		long end = System.currentTimeMillis();
-		double time = (double)((end - start)/1000);
+		double time = (double)((end - start)/200);
 		
 		
 		

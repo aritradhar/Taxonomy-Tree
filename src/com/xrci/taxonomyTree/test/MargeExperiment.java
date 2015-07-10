@@ -46,7 +46,7 @@ public class MargeExperiment {
 			for(int j = 0; j < 50; j++){
 				int t = rand.nextInt(leafCount);
 				float tempWeight = rand.nextFloat();
-				temp.addOrModifyWeight_leaf(temp.search(leafNames.get(t)), tempWeight);
+				temp.addOrModifyWeight_leaf(temp.getNodeMap().NODE_MAP.get(leafNames.get(t)), tempWeight);
 			}
 			profiles.add(temp);
 		}

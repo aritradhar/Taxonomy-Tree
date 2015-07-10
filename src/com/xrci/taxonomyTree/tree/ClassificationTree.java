@@ -46,6 +46,7 @@ public class ClassificationTree<T> implements Serializable {
 	 */
 	private static final long serialVersionUID = -317766179709642912L;
 	public static Node<?> DUMMY_NODE;
+	public NodeMap<T> nodeMap;
 	static {
 		DUMMY_NODE = new Node<String>("Dummy");
 	}
@@ -60,6 +61,7 @@ public class ClassificationTree<T> implements Serializable {
 	private int recalculatedHeight;
 
 	public ClassificationTree(Node<T> Root) {
+		nodeMap = new NodeMap<>();
 		this.ROOT = Root;
 		this.sizeCalled = false;
 		this.recalculateLeafCount();
@@ -85,6 +87,10 @@ public class ClassificationTree<T> implements Serializable {
 	 */
 	public Node<T> getTree() {
 		return this.ROOT;
+	}
+	
+	public NodeMap<T> getNodeMap(){
+		return this.nodeMap;
 	}
 
 	/**
@@ -334,6 +340,7 @@ public class ClassificationTree<T> implements Serializable {
 	 * @param leagacyMode
 	 *            Works with google's Taxonomy tree
 	 */
+	@SuppressWarnings("unchecked")
 	public void insert(T[] elements, boolean leagacyMode) {
 		if (elements == null) {
 			throw new IllegalArgumentException("null argument passed");
@@ -363,6 +370,8 @@ public class ClassificationTree<T> implements Serializable {
 
 			if (temp.children.isEmpty()) {
 				Node<T> newNode = new Node<>(element, ++i);
+				//for quick access
+				nodeMap.NODE_MAP.put(element, newNode);
 				temp.children = new ArrayList<Node<T>>();
 				temp.children.add(newNode);
 				newNode.parent = temp;
@@ -384,6 +393,8 @@ public class ClassificationTree<T> implements Serializable {
 
 				if (!found) {
 					Node<T> newNode = new Node<T>(element);
+					//for quick access
+					nodeMap.NODE_MAP.put(element, newNode);
 					// temp.children = new ArrayList<Node>();
 					temp.children.add(newNode);
 					newNode.parent = temp;

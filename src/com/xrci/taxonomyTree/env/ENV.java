@@ -30,6 +30,7 @@ public class ENV {
 	public static final String proxyServer = "proxy.eur.xerox.com";
 	public static final String proxyPort = "8000";
 	public static final String IMAGE_WRITE_OPTION = "jpg";
+	public static final boolean ENABLE_HASHMAP_NODE_INDEX = true;
 
 	public static void setProxy() {
 		System.setProperty("http.proxyHost", proxyServer);
